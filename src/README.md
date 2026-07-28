@@ -13,8 +13,8 @@ The Godot project lives entirely in this `src` directory.
 - Renderer: Compatibility
 
 Godot 4 no longer stores filtering in each texture's import options. Filtering is enforced through
-the project-wide CanvasItem setting and again on the root viewport. PNG imports remain lossless
-with mipmap generation disabled, which is Godot's default for 2D textures.
+the project-wide CanvasItem setting. PNG imports remain lossless with mipmap generation disabled,
+which is Godot's default for 2D textures.
 
 ## Initial asset scope
 
@@ -29,4 +29,4 @@ This first kit deliberately covers the Camp chapter described by the GDD:
 Runtime PNGs are final game assets. Asset generation and conversion live outside the Godot project
 in the repository-local `.agents/skills/generate-ashfall-assets` skill.
 
-Run the project to open the 640×480 native-resolution asset gallery.
+A gameplay main scene is intentionally deferred beyond this asset/bootstrap milestone.
