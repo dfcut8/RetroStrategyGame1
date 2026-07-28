@@ -20,6 +20,7 @@ The desired feeling is:
 | **The Tribe** | Survival as the central measure of success; a journey through a hostile landscape; resource pressure and difficult choices with visible life-or-death consequences for a community. |
 | **Warsim** | Text and ASCII used as strengths; procedural factions, characters, locations, petitions, and events; freedom to rule through diplomacy, cruelty, curiosity, commerce, or war; strong emergent storytelling and humor. |
 | **Khaldun: Text Based Strategy** | A society that changes underneath the player; economy, demographics, military composition, terrain, morale, advisors, loyalty, and political cohesion; prosperity creating new vulnerabilities rather than serving as a simple win meter. |
+| **Riftborne** | A terminal interface used to present dense grand strategy; specialized settlements, production, storage, logistics, trade routes, markets, contracts, espionage, sabotage, and political influence; small decisions compounding into crises or opportunities over a long campaign. |
 
 ## Shared design DNA
 
@@ -51,6 +52,14 @@ Use a limited palette, chunky pixels, icon-driven panels, compact maps, bitmap t
 
 A campaign or reign should create a concise chronicle: settlements founded, winters survived, factions betrayed, battles lost, reforms made, and causes of collapse. Failure should be interesting enough to invite another attempt.
 
+### 8. Information can be a strategic resource
+
+Scouting, reports, rumors, spies, and uncertain enemy intentions can create decisions without adding visual complexity. The player should sometimes act on incomplete information, invest in learning more, conceal their own position, or influence events without open warfare.
+
+### 9. Logistics turn expansion into a commitment
+
+New territory should create supply, storage, transport, defense, and political obligations. Specialized settlements and trade routes can make geography meaningful while preventing expansion from being an automatic path to victory.
+
 ## The intended blend
 
 The likely core loop is:
@@ -77,11 +86,12 @@ The game should sit between:
 - **Short text with character, not walls of exposition.**
 - **A focused initial scope, not Warsim-sized feature sprawl.**
 - **Tactical conflict as one tool of rule, not the whole game.**
+- **Espionage, trade, and influence as credible alternatives to direct conflict.**
 - **Retro immediacy, with modern clarity and convenience.**
 - **Replayable variation, but not randomness that erases planning.**
+- **Consequences that compound over time, without requiring always-online or months-long play.**
 - **Bittersweet, grounded stakes, with room for dry humor and wonder.**
 
 ## Working design statement
 
 > A low-resolution strategy chronicle about leading a fragile people through scarcity and conflict. The player governs through compact menus, maps, petitions, and turn-based encounters. Every choice alters resources, relationships, and the society itself, producing a short but memorable history of survival, growth, compromise, or collapse.
-
