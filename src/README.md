@@ -26,14 +26,7 @@ This first kit deliberately covers the Camp chapter described by the GDD:
 - local scrap cache;
 - Permanent Hub defining project.
 
-Raw image-generation sources are retained under `assets/source/imagegen` for iteration and excluded
-from Godot imports by `.gdignore`. Runtime assets are cropped, nearest-neighbor reduced, keyed to
-transparency where applicable, and quantized to the 16-color Ashfall palette.
-
-Rebuild the runtime PNGs from the retained sources with:
-
-```powershell
-.\tools\process_pixel_art.ps1 -ProjectDirectory (Get-Location).Path
-```
+Runtime PNGs are final game assets. Asset generation and conversion live outside the Godot project
+in the repository-local `.agents/skills/generate-ashfall-assets` skill.
 
 Run the project to open the 640×480 native-resolution asset gallery.
