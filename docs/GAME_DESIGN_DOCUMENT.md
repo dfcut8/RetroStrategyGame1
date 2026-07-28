@@ -22,7 +22,7 @@ The intended campaign is short enough to replay. A completed run should leave be
    Population is the heart of the settlement. Deaths, arrivals, injuries, specialists, dissent, and departures should be visible in reports and events.
 
 4. **The region matters**  
-   The settlement cannot become self-sufficient in isolation. Scouting, salvage, trade, diplomacy, and threats connect city building to the regional map.
+   The settlement cannot become self-sufficient in isolation. Scouting, scavenging, trade, diplomacy, and threats connect city building to the regional map.
 
 5. **Growth changes the game**  
    A larger settlement gains options but also attracts attention, develops internal factions, and needs more sophisticated infrastructure and government.
@@ -93,10 +93,10 @@ The interface should distinguish between **stockpiles**, **people**, **capacitie
 |---|---|---|---|
 | **Water** | Daily survival; farming; some industry | wells, collectors, purification, regional sources, trade | population, drought, contamination, damaged infrastructure |
 | **Food** | Daily survival and population health | gathering, farming, livestock, hunting, trade | population, spoilage, poor weather, pests |
-| **Salvage** | Basic construction, repair, tools, and trade | ruins, scrapyards, dismantling, tribute, trade | buildings, repairs, defenses, equipment |
-| **Fuel** | Long-range expeditions, generators, vehicles, and advanced projects | depots, refining, trade, rare salvage | travel, powered infrastructure, emergency generation |
+| **Scrap** | Basic construction, repair, tools, and trade | ruins, scrapyards, dismantling, tribute, trade | buildings, repairs, defenses, equipment |
+| **Fuel** | Long-range expeditions, generators, vehicles, and advanced projects | depots, refining, trade, rare scrap | travel, powered infrastructure, emergency generation |
 
-Four stockpiles are enough for the initial design. Additional material types should be added only if playtesting proves that Salvage is doing too many jobs.
+Four stockpiles are enough for the initial design. Additional material types should be added only if playtesting proves that Scrap is doing too many jobs.
 
 ### 4.2 People
 
@@ -151,14 +151,17 @@ This keeps research readable and prevents the economy from gaining a fifth every
 
 ### 5.1 Settlement stages
 
-Progression is divided into four stages. Advancement should require both a population range and completion of a defining project, so population alone cannot rush the game.
+Progression is divided into five stages. Advancement should require both a population range and completion of a defining project, so population alone cannot rush the game.
 
 | Stage | Identity | New capabilities | New pressures |
 |---|---|---|---|
 | **I. Camp** | A group trying to survive | gathering, tents, water collection, short scavenging trips | exposure, hunger, illness, almost no reserve |
 | **II. Settlement** | A permanent home | farming, workshop, clinic, storage, basic militia, migration | maintenance, sanitation, larger consumption, raids |
-| **III. Township** | A regional power | specialists, outposts, trade routes, council factions, advanced defenses | politics, inequality, diplomacy, coordinated enemies |
-| **IV. Haven** | A society choosing its future | major infrastructure and a legacy project | final crises, regional commitments, internal debate over the ending |
+| **III. Township** | A stable local community | specialists, improved workshops, local markets, basic outposts | competing interests, maintenance, nearby rivals |
+| **IV. City** | A major regional center | advanced industry, districts, trade routes, council factions, strong defenses | inequality, infrastructure dependence, diplomacy, coordinated enemies |
+| **V. The Capitol** | The recognized seat of regional leadership | major infrastructure, regional governance, and a legacy project | final crises, alliance obligations, internal debate over the ending |
+
+A **City** is achieved through population, infrastructure, and specialization. Becoming **The Capitol** is a political achievement: the City must earn regional legitimacy through alliances, influence, controlled routes, and completion of its legacy project.
 
 ### 5.2 Population growth
 
@@ -182,7 +185,7 @@ New arrivals may bring skills, dependents, disputes, obligations, or enemies. Th
 At each stage, the player should choose a few developments from four broad branches:
 
 - **Sustenance** — water security, farming, storage, medicine;
-- **Industry** — repair, construction, power, vehicles, salvage efficiency;
+- **Industry** — repair, construction, power, vehicles, scrap recovery;
 - **Security** — scouting, fortification, militia, intelligence;
 - **Society** — cohesion, education, diplomacy, migration, governance.
 
@@ -218,7 +221,7 @@ Possible legacy paths:
    Unite several settlements through trade, radio, and mutual defense. Focus: diplomacy, routes, reputation, and cohesion.
 
 3. **The Iron Refuge**  
-   Build a heavily defended, powered stronghold capable of surviving the coming crisis alone. Focus: industry, fuel, salvage, and security.
+   Build a heavily defended, powered stronghold capable of surviving the coming crisis alone. Focus: industry, fuel, scrap, and security.
 
 Each path changes the final crises, required allies or enemies, and epilogue. None should be presented as the universally “good” ending.
 
@@ -304,6 +307,7 @@ Delay:
 
 ## 9. Current design recommendation
 
-Build the game around **Water, Food, Salvage, Fuel, and People**. Track **Health, Cohesion, and visible threats** as conditions. Let the settlement advance from **Camp → Settlement → Township → Haven**, with each stage unlocking options and adding obligations.
+Build the game around **Water, Food, Scrap, Fuel, and People**. Track **Health, Cohesion, and visible threats** as conditions. Let the settlement advance from **Camp → Settlement → Township → City → The Capitol**, with each stage unlocking options and adding obligations.
 
 Use a **40-turn finite campaign** in which the player survives escalating pressure and completes one of several **legacy projects**. This gives Ashfall a clear purpose beyond simply making numbers rise: the player is deciding what kind of society deserves to survive.
+
