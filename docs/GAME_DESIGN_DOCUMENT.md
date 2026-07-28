@@ -1,6 +1,6 @@
 # Ashfall — Game Design Document
 
-> Working draft v0.1 — Core development loop, resources, progression, and campaign goal
+> Working draft v0.4 — Core development loop, resources, progression, controls, and campaign goal
 
 ## 1. High concept
 
@@ -18,8 +18,8 @@ The intended campaign is short enough to replay. A completed run should leave be
 2. **Few decisions with layered consequences**  
    A turn should contain a small number of important orders. Depth comes from timing, trade-offs, and delayed effects rather than constant micromanagement.
 
-3. **People, not counters**  
-   Population is the heart of the settlement. Deaths, arrivals, injuries, specialists, dissent, and departures should be visible in reports and events.
+3. **Population with human consequences**
+   Population is managed at the level of a society through readable totals and workforce assignments, not as simulated individuals. Deaths, arrivals, injuries, dissent, and departures should still be visible in reports, events, and the campaign chronicle.
 
 4. **The region matters**  
    The settlement cannot become self-sufficient in isolation. Scouting, scavenging, trade, diplomacy, and threats connect city building to the regional map.
@@ -37,10 +37,10 @@ The intended campaign is short enough to replay. A completed run should leave be
 The campaign repeatedly moves through five steps:
 
 1. **Assess**  
-   Read the settlement report: production, consumption, current shortages, morale, health, threats, and important messages.
+   Read the settlement report: production, consumption, current shortages, Cohesion, Health, threats, and important messages.
 
 2. **Plan**  
-   Assign available people, choose construction or repair work, set rationing or policy, and prepare an expedition or diplomatic action.
+   Allocate population, choose construction or repair work, set rationing or policy, and—once the capability is unlocked—prepare an expedition or diplomatic action.
 
 3. **Commit**  
    Spend limited orders and resources. Most major actions take time, reserve workers, or expose people to risk.
@@ -60,7 +60,7 @@ In compact form:
 The exact number is still to be tested, but a turn should usually allow:
 
 - one major settlement project or upgrade;
-- one regional action, such as scouting, scavenging, trading, negotiating, or attacking;
+- after expeditions are unlocked, one regional action, such as scouting, scavenging, trading, negotiating, or attacking;
 - workforce reassignment;
 - one policy or event decision;
 - then advancement of time.
@@ -77,11 +77,34 @@ Build, repair, assign workers, manage capacity, and see the community physically
 
 Discover connected sites and factions, establish routes and outposts, gather scarce resources, and respond to threats.
 
+The regional map may show rumors and distant landmarks during the Camp stage, but the player cannot issue regional orders yet. These elements must use a visibly disabled presentation, such as muted markers and a short **Beyond our reach** label, rather than appearing selectable. Active regional play begins only after the settlement has established the infrastructure required to launch an expedition. This gate applies to all player-initiated regional orders, including trade and diplomacy; outside groups may still contact the Camp through events.
+
 #### Council
 
 Handle petitions, policies, disputes, alliances, leadership questions, and the social consequences of survival decisions.
 
 These are not separate mini-games. An expedition may discover a water plant, restoring it may require a settlement workshop, and control of it may provoke a neighboring faction or political dispute.
+
+### 3.4 Control scheme
+
+The interface is mouse-first. A player must be able to complete the full core turn loop without
+knowing a keyboard shortcut.
+
+- Left click selects, opens, and activates clearly labeled primary actions.
+- Hover previews information but never commits an action.
+- Right click may provide details or back/cancel behavior, but visible controls must offer the same
+  functions for a one-button mouse.
+- Wheel and middle-button navigation are conveniences; visible zoom, scrolling, adjustment, and
+  primary-button panning controls remain available.
+- Costs, time, labor, people committed, risk, and projected effects are shown before the player
+  commits an applicable action.
+- Population and expedition controls operate on aggregate values rather than individual units.
+- Disabled actions explain their requirement, including stage-gated expedition access.
+- Hover, selection, pending, disabled, and danger states are distinguished by more than color.
+- Keyboard and future controller inputs mirror mouse actions and do not expose unique core commands.
+
+The complete interaction rules and prototype acceptance criteria are defined in
+[Control Scheme](CONTROL_SCHEME.md).
 
 ## 4. Resource model
 
@@ -100,19 +123,21 @@ Four stockpiles are enough for the initial design. Additional material types sho
 
 ### 4.2 People
 
-**Population** is both the community and the available workforce.
+**Population** is both the community and the available workforce. It is represented through aggregate numbers rather than individual residents.
 
-Residents may be:
+Useful population categories include:
 
-- children or dependents;
-- unassigned workers;
-- assigned workers;
-- specialists;
-- injured or sick;
-- away on expeditions;
+- total population;
+- available workforce;
+- assigned workforce by sector;
+- dependents;
+- injured or sick population;
+- population committed to expeditions;
 - guards or militia.
 
-The player cannot spend population like a normal resource. Assigning someone to one role makes them unavailable elsewhere, and risking them outside the settlement has human and economic consequences.
+The interface should favor a small number of readable totals and assignments rather than rosters, named workers, or per-person simulation. Specialists should normally be represented as capabilities, bonuses, or population groups rather than individual characters.
+
+The player cannot spend population like a normal resource. Allocating people to one role makes that portion of the population unavailable elsewhere, and risking a group outside the settlement has human and economic consequences. Reports and events should give aggregate changes human meaning without requiring individual records.
 
 ### 4.3 Capacities
 
@@ -155,13 +180,106 @@ Progression is divided into five stages. Advancement should require both a popul
 
 | Stage | Identity | New capabilities | New pressures |
 |---|---|---|---|
-| **I. Camp** | A group trying to survive | gathering, tents, water collection, short scavenging trips | exposure, hunger, illness, almost no reserve |
-| **II. Settlement** | A permanent home | farming, workshop, clinic, storage, basic militia, migration | maintenance, sanitation, larger consumption, raids |
+| **I. Camp** | A group trying to survive | local gathering and salvage, tents, water collection | exposure, hunger, illness, almost no reserve |
+| **II. Settlement** | A permanent home | farming, workshop, clinic, storage, basic militia, migration, expedition infrastructure | maintenance, sanitation, larger consumption, raids |
 | **III. Township** | A stable local community | specialists, improved workshops, local markets, basic outposts | competing interests, maintenance, nearby rivals |
 | **IV. City** | A major regional center | advanced industry, districts, trade routes, council factions, strong defenses | inequality, infrastructure dependence, diplomacy, coordinated enemies |
 | **V. The Capitol** | The recognized seat of regional leadership | major infrastructure, regional governance, and a legacy project | final crises, alliance obligations, internal debate over the ending |
 
 A **City** is achieved through population, infrastructure, and specialization. Becoming **The Capitol** is a political achievement: the City must earn regional legitimacy through alliances, influence, controlled routes, and completion of its legacy project.
+
+### 5.1.1 Camp progression model
+
+The **Camp** should play as a compact settlement-planning chapter rather than a reduced version of the whole game. Its structure takes inspiration from *Rise of Babylon*: limited time and building space make cheap immediate growth compete with efficient long-term development, population depends on housing capacity, and looming threats prevent a perfect leisurely build.
+
+The Camp is expected to last roughly **6–10 turns** in the 40-turn campaign. It does not end automatically on a fixed turn, but a clearly forecast first major crisis should arrive near the end of that window. Remaining a Camp is allowed, but makes the crisis much harder because makeshift structures provide poor protection.
+
+#### Camp economy
+
+Camp play uses a closed local loop:
+
+**Allocate population → gather Water, Food, and Scrap → add or improve capacity → absorb consequences → prepare permanence**
+
+There is no active regional trade, diplomacy, or expedition play. All gathering and salvage come from the settlement's immediate catchment and are represented as workforce assignments rather than map missions.
+
+Each Camp turn should normally ask the player to make:
+
+- one construction, repair, or defining-project order;
+- a small number of aggregate workforce allocations;
+- one rationing, reception, or event decision;
+- then advance time.
+
+#### Space and building choices
+
+The Camp has a small number of visually distinct **safe plots**. Early structures should offer alternatives rather than a single upgrade chain:
+
+- **makeshift structures** are cheap and quick, but fragile, maintenance-heavy, and space-inefficient;
+- **permanent structures** cost more Scrap and labor, but provide better capacity per plot and contribute toward Settlement advancement.
+
+For example, several tarp shelters may solve tonight's exposure more cheaply than a bunkhouse, while consuming plots that will later be needed for storage, sanitation, or the defining project. Demolition can recover part of the Scrap, but not the spent time. The goal is to create understandable tension between building now, saving for something better, and running out of room.
+
+The settlement view should visibly replace tents, debris, and improvised work areas with sturdier structures. Population remains an aggregate number; small crowd animations, occupied shelter lights, work activity, and density communicate growth without representing residents individually.
+
+#### Population resolution
+
+At the end of a Camp turn, resolve population in this order:
+
+1. production and consumption;
+2. shelter, health, and overcrowding effects;
+3. arrivals, departures, injuries, and deaths;
+4. Cohesion changes;
+5. threat escalation.
+
+Show this sequence as a short resolution report so the player can connect aggregate gains or losses to their causes.
+
+Shelter is a strong growth constraint, but exceeding it does not delete population. Exposed or overcrowded people increase consumption pressure, reduce Health and Cohesion, and may leave if the situation continues. Spare shelter, stable necessities, and good Cohesion improve the chance and size of migrant arrivals.
+
+Growth should come mainly from discrete survivor-arrival opportunities. The player may accept everyone, accept a smaller group, or turn people away. These decisions make population growth valuable but not automatically correct.
+
+#### Pressure and warning
+
+The Camp chapter combines two kinds of pressure:
+
+- **time pressure** escalates weather, contamination, decay, or a roaming threat even if the player stays small;
+- **visibility pressure** reacts to population, stored resources, smoke, light, and permanent construction.
+
+The first major threat must be announced several turns in advance through a compact forecast or report. Each minor random event may occur at most once per run, while major Camp decisions should occur at known points so the player can learn from previous campaigns. Visibility pressure must identify its active sources and, when reasonably predictable, the next escalation breakpoint. Cohesion penalties may reinforce later trouble, but the interface must show the feedback and provide a recovery action.
+
+#### Advancing to Settlement
+
+Advancement should be a visible strategic objective rather than an automatic population level. The Camp becomes a **Settlement** when it has:
+
+- reached the prototype population range for Stage II;
+- enough shelter for its current population;
+- maintained non-negative projected Water and Food for two consecutive turns;
+- completed a **Permanent Hub**, the defining Camp project.
+
+The Permanent Hub represents durable storage, administration, shared meeting space, and a commitment to remain. Its exact theme may vary with the settlement's development branch, but it always occupies a safe plot and requires a meaningful Scrap and labor investment. Branch-themed variants should remain mechanically equivalent in the initial prototype.
+
+The interface should present these requirements as four clear readiness marks, not a hidden score. Readiness is evaluated after all five Camp-resolution steps, using the resulting population, capacities, and projections. If the forecast crisis occurs on the same turn, the crisis resolves first and the Camp must still satisfy all four marks afterward. Advancement then occurs, and Settlement capabilities become available. The **Expedition Post remains a separate post-advancement project**.
+
+This model borrows *Rise of Babylon*'s pressure between cheap growth, limited space, efficiency, and a finite horizon. It does not copy that game's single population-maximization goal: Ashfall's Camp is successful when it becomes resilient enough to survive and reach outward.
+
+### 5.1.2 Unlocking expeditions
+
+Expeditions are a capability earned through settlement development, not a starting action.
+
+During the **Camp** stage, the player is confined to the settlement and its immediate catchment. Gathering and salvage are local workforce assignments resolved through the settlement economy. The regional map can foreshadow future play with distant smoke, radio fragments, landmarks, or rumors, but its destinations cannot yet be selected.
+
+After advancing from **Camp** to **Settlement**, the **Expedition Post** becomes available as a new project. It is a separate, post-advancement project rather than the defining project used to reach Settlement. The Post represents the communications, route knowledge, equipment, and organization needed to operate beyond the local area. Completing it unlocks the first expedition and the active regional map.
+
+The initial expedition model should remain compact:
+
+- one active expedition at a time;
+- one aggregate population commitment rather than a roster;
+- a chosen mission and destination;
+- committed supplies, with Fuel required only for routes beyond the initial short-range area;
+- estimated duration and visible risk;
+- aggregate results, losses, and discoveries.
+
+An expedition traveling on the map does not consume the regional action each turn merely by existing. A regional action may redirect it, resolve a destination, order its return, or conduct another unlocked regional operation. The limit on active expeditions is therefore separate from the per-turn regional order limit.
+
+An expedition appears on the regional map as a single animated caravan, convoy, or expedition marker following a visible route. Its silhouette may change with its scale or transport type, but it remains one strategic object. Its panel shows progress, people committed, supplies, risk, and status. Later development may increase expedition range or allow a second simultaneous expedition, but it should not introduce individual-unit control.
 
 ### 5.2 Population growth
 
@@ -178,7 +296,7 @@ Newcomers are attracted by:
 
 Growth slows or reverses when basic needs are unstable. Excess population without capacity should cause overcrowding, sickness, ration pressure, and dissent rather than an arbitrary hard cap.
 
-New arrivals may bring skills, dependents, disputes, obligations, or enemies. This makes accepting migrants a strategic and moral decision rather than an automatic reward.
+New arrivals may change the workforce mix or bring dependents, disputes, obligations, or enemies. This makes accepting migrants a strategic and moral decision rather than an automatic reward.
 
 ### 5.3 Development branches
 
@@ -278,14 +396,16 @@ Include:
 - one settlement;
 - a small connected regional map;
 - four stockpiles;
-- population assignment;
+- aggregate population assignment;
 - five to eight building types;
-- scouting and scavenging expeditions;
+- a small fixed set of Camp safe plots with makeshift and permanent building alternatives;
+- four visible Settlement-readiness marks and the Permanent Hub project;
+- a Settlement-stage Expedition Post and one active scouting or scavenging expedition;
 - one neutral faction and one hostile threat;
 - a small event deck;
 - two settlement stages;
 - one simplified legacy objective;
-- a short 12–16 turn scenario.
+- a short 12–16 turn scenario, with Camp progression compressed to roughly 4–6 turns for this vertical slice.
 
 Delay:
 
@@ -310,4 +430,3 @@ Delay:
 Build the game around **Water, Food, Scrap, Fuel, and People**. Track **Health, Cohesion, and visible threats** as conditions. Let the settlement advance from **Camp → Settlement → Township → City → The Capitol**, with each stage unlocking options and adding obligations.
 
 Use a **40-turn finite campaign** in which the player survives escalating pressure and completes one of several **legacy projects**. This gives Ashfall a clear purpose beyond simply making numbers rise: the player is deciding what kind of society deserves to survive.
-

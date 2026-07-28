@@ -46,3 +46,24 @@ After any task that changes files in this repository, and before the final respo
    - remote synchronization could not be verified, with the reason.
 
 Checking synchronization does not authorize committing or pushing. Only commit or push when the user's request explicitly includes that action.
+
+## `/lgtm` pull request workflow
+
+When the user's entire trimmed message is `/lgtm`, treat it as explicit authorization to merge the
+open pull request associated with the current worktree branch. Do not ask for another confirmation.
+
+1. Resolve the pull request from the current branch rather than guessing from recent repository
+   activity. If there is no associated open pull request, or the target is ambiguous, stop and
+   report that clearly.
+2. Refresh the remote state and verify the pull request is open, mergeable, and targeting the
+   intended base branch.
+3. Inspect required checks and reviews. Wait for pending required checks when practical. Do not
+   bypass a failed check, branch protection, merge conflict, or missing required review unless the
+   user explicitly authorizes that specific override.
+4. Merge using a repository-supported method, preferring squash when more than one method is
+   available. Do not merge unrelated pull requests.
+5. Verify that the pull request reports `MERGED` and that the remote base branch contains the
+   resulting commit before reporting success.
+
+The `/lgtm` command authorizes the merge and its normal verification steps. It does not authorize
+unrelated releases, deployments, branch deletions, or cleanup of other worktrees.
