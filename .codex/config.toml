@@ -1,0 +1,7 @@
+[mcp_servers.godot]
+command = 'C:\Program Files\nodejs\node.exe'
+args = ['C:\Program Files\nodejs\node_modules\npm\bin\npx-cli.js', "-y", "@coding-solo/godot-mcp"]
+startup_timeout_sec = 120
+
+[mcp_servers.godot.env]
+GODOT_PATH = 'C:\home\bin\Godot\Godot.exe'
