@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ashfall game design document: a compact post-apocalyptic settlement strategy game.">
+  <meta name="theme-color" content="#f7f5f0">
+  <title>Ashfall — Game Design Document</title>
+  <style>
+    :root {
+      --ink: #17141f;
+      --panel: #24202d;
+      --panel-2: #302a3a;
+      --paper: #e4ddcc;
+      --muted: #aaa2b2;
+      --line: #5d536b;
+      --violet: #8a7fc8;
+      --ochre: #c58b32;
+      --rust: #b55737;
+      --cyan: #65c6bd;
+      --olive: #8d9652;
+      --white: #f4efe2;
+      --shadow: #09080d;
+      --content: 76rem;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+    body {
+      margin: 0;
+      color: var(--paper);
+      background:
+        linear-gradient(rgba(23,20,31,.94), rgba(23,20,31,.97)),
+        repeating-linear-gradient(0deg, transparent 0 3px, rgba(138,127,200,.1) 3px 4px);
+      font-family: "Lucida Console", "Courier New", monospace;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    a { color: var(--cyan); text-underline-offset: .2em; }
+    a:hover { color: var(--white); }
+    :focus-visible { outline: 3px solid var(--ochre); outline-offset: 4px; }
+
+    .skip {
+      position: absolute; left: 1rem; top: -5rem; z-index: 20;
+      padding: .65rem 1rem; color: var(--ink); background: var(--white);
+    }
+    .skip:focus { top: 1rem; }
+
+    .status {
+      position: sticky; top: 0; z-index: 10;
+      border-bottom: 3px solid var(--ink);
+      color: var(--ink); background: var(--paper);
+      box-shadow: 0 4px 0 rgba(9,8,13,.55);
+    }
+    .status-inner {
+      max-width: var(--content); margin: auto;
+      display: grid; grid-template-columns: 1.4fr repeat(4, 1fr);
+    }
+    .status span {
+      min-width: 0; padding: .55rem .8rem;
+      border-right: 2px solid var(--ink);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      font-size: .78rem; font-weight: 700; letter-spacing: .07em;
+    }
+    .status span:last-child { border-right: 0; }
+    .status .brand { color: var(--white); background: var(--ink); }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 72% 18%, rgba(138,127,200,.28), transparent 30%),
+        linear-gradient(165deg, #2f2940 0 45%, #1b1823 45% 100%);
+      overflow: hidden;
+    }
+    .hero-inner {
+      max-width: var(--content); min-height: 28rem; margin: auto;
+      padding: 6rem 2rem 4.5rem; position: relative;
+      display: grid; align-content: end;
+    }
+    .hero-inner::after {
+      content: ""; position: absolute; right: -6rem; bottom: -3rem;
+      width: 31rem; height: 15rem; opacity: .6;
+      background:
+        linear-gradient(145deg, transparent 0 30%, var(--ochre) 30% 39%, transparent 39%),
+        linear-gradient(35deg, transparent 0 58%, var(--violet) 58% 64%, transparent 64%);
+      clip-path: polygon(0 100%, 10% 63%, 20% 74%, 31% 41%, 43% 67%, 55% 29%, 67% 62%, 79% 18%, 100% 100%);
+      image-rendering: pixelated;
+    }
+    .eyebrow { margin: 0 0 .8rem; color: var(--ochre); font-size: .8rem; letter-spacing: .18em; text-transform: uppercase; }
+    h1, h2, h3, h4 { line-height: 1.25; text-wrap: balance; }
+    h1 { max-width: 13ch; margin: 0; color: var(--white); font-size: clamp(3rem, 9vw, 7rem); letter-spacing: -.07em; text-shadow: 5px 5px 0 var(--rust); }
+    .dek { max-width: 44rem; margin: 1.7rem 0 0; color: var(--paper); font-size: clamp(1rem, 2vw, 1.3rem); }
+    .version { display: inline-block; margin-top: 1.5rem; padding: .25rem .55rem; color: var(--ink); background: var(--cyan); font-size: .72rem; font-weight: 700; }
+
+    .layout {
+      max-width: var(--content); margin: auto; padding: 3.5rem 2rem 7rem;
+      display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: 4rem;
+    }
+    nav { align-self: start; position: sticky; top: 4.8rem; }
+    nav p { margin: 0 0 1rem; color: var(--ochre); font-size: .72rem; letter-spacing: .15em; text-transform: uppercase; }
+    nav ol { margin: 0; padding: 0; list-style: none; border-left: 2px solid var(--line); }
+    nav a { display: block; padding: .4rem .8rem; color: var(--muted); text-decoration: none; font-size: .78rem; line-height: 1.35; }
+    nav a:hover { color: var(--white); background: var(--panel); }
+
+    main { min-width: 0; }
+    section { margin-bottom: 5.5rem; }
+    h2 {
+      margin: 0 0 2rem; padding-bottom: .65rem;
+      color: var(--white); border-bottom: 2px solid var(--line);
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+    }
+    h2 .num { color: var(--ochre); }
+    h3 { margin: 2.5rem 0 1rem; color: var(--violet); font-size: 1.2rem; }
+    h4 { color: var(--cyan); }
+    p { max-width: 72ch; }
+    strong { color: var(--white); }
+    li + li { margin-top: .55rem; }
+
+    .signal {
+      margin: 2rem 0; padding: 1.2rem 1.4rem;
+      border: 1px solid var(--violet); border-left: 7px solid var(--violet);
+      color: var(--white); background: var(--panel);
+      box-shadow: 5px 5px 0 var(--shadow);
+    }
+    .loop {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: .7rem;
+      margin: 2rem 0; padding: 0; list-style: none; counter-reset: loop;
+    }
+    .loop li {
+      min-height: 8.5rem; margin: 0; padding: 1rem;
+      border: 1px solid var(--line); background: var(--panel);
+      counter-increment: loop;
+    }
+    .loop li::before { content: "0" counter(loop); display: block; margin-bottom: .6rem; color: var(--ochre); font-weight: 700; }
+    .loop strong { display: block; }
+    .loop small { display: block; margin-top: .4rem; color: var(--muted); line-height: 1.45; }
+
+    .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0; }
+    .card { padding: 1.2rem; border: 1px solid var(--line); background: var(--panel); }
+    .card h3, .card h4 { margin-top: 0; }
+    .card p { margin-bottom: 0; color: var(--muted); }
+    .resource { position: relative; overflow: hidden; }
+    .resource::after { content: ""; position: absolute; inset: auto 0 0; height: 4px; background: var(--accent); }
+    .resource.water { --accent: var(--cyan); }
+    .resource.food { --accent: var(--olive); }
+    .resource.scrap { --accent: var(--ochre); }
+    .resource.fuel { --accent: var(--rust); }
+
+    .table-wrap { overflow-x: auto; border: 1px solid var(--line); }
+    table { width: 100%; border-collapse: collapse; min-width: 42rem; background: var(--panel); font-size: .88rem; }
+    th, td { padding: .9rem 1rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: var(--ink); background: var(--paper); letter-spacing: .05em; }
+    tr:last-child td { border-bottom: 0; }
+
+    .stages { margin: 2rem 0; padding: 0; list-style: none; border-left: 3px solid var(--violet); }
+    .stages li { position: relative; margin: 0; padding: 0 0 2rem 2rem; }
+    .stages li::before { content: ""; position: absolute; left: -.57rem; top: .35rem; width: .8rem; height: .8rem; border: 2px solid var(--ink); background: var(--ochre); }
+    .stages li:last-child::before { background: var(--cyan); }
+    .stages h3 { margin: 0 0 .25rem; color: var(--white); }
+    .stages p { margin: .2rem 0; }
+    .stages .pressure { color: var(--muted); font-size: .86rem; }
+
+    .paths { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .path { padding: 1.2rem; border-top: 5px solid var(--accent); background: var(--panel); }
+    .path:nth-child(1) { --accent: var(--olive); }
+    .path:nth-child(2) { --accent: var(--cyan); }
+    .path:nth-child(3) { --accent: var(--rust); }
+    .path h3 { margin-top: 0; color: var(--white); }
+
+    footer { padding: 2rem; border-top: 1px solid var(--line); color: var(--muted); text-align: center; font-size: .75rem; }
+
+    @media (max-width: 900px) {
+      .status-inner { grid-template-columns: repeat(4, 1fr); }
+      .status .brand { grid-column: 1 / -1; }
+      .layout { grid-template-columns: 1fr; gap: 2rem; padding-top: 2rem; }
+      nav { position: static; }
+      nav ol { columns: 2; }
+      .loop { grid-template-columns: 1fr 1fr; }
+      .paths { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 580px) {
+      body { font-size: 15px; }
+      .status-inner { grid-template-columns: 1fr 1fr; }
+      .status .brand { grid-column: 1 / -1; }
+      .status span:nth-last-child(-n+2) { display: none; }
+      .hero-inner { min-height: 24rem; padding: 4rem 1.2rem 3rem; }
+      .layout { padding-inline: 1.2rem; }
+      nav ol { columns: 1; }
+      .cards, .loop { grid-template-columns: 1fr; }
+    }
+
+    /* Minimal reading theme */
+    :root {
+      --ink: #292724; --panel: #fff; --panel-2: #f1eee8; --paper: #f7f5f0;
+      --muted: #69645e; --line: #d9d4cc; --violet: #625b86; --ochre: #9a6b27;
+      --rust: #9b513d; --cyan: #397a78; --olive: #667044; --white: #171614;
+      --shadow: transparent; --content: 72rem;
+    }
+    body {
+      color: var(--ink); background: var(--paper);
+      font-family: "Segoe UI", SegoeUI, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 17px; line-height: 1.65;
+    }
+    .status, .status span, .eyebrow, .version, nav, h2 .num, .loop li::before, footer {
+      font-family: "Agave Mono", Agave, "Agave Nerd Font Mono", Consolas, monospace;
+    }
+    a { color: var(--violet); }
+    a:hover { color: var(--ink); }
+    :focus-visible { outline-color: var(--violet); }
+    .status { border-bottom: 1px solid var(--line); color: var(--muted); background: rgba(255,255,255,.96); box-shadow: none; }
+    .status span { padding: .5rem .8rem; border-right: 1px solid var(--line); font-size: .72rem; font-weight: 500; letter-spacing: .04em; }
+    .status .brand { color: var(--ink); background: transparent; font-weight: 700; }
+    .hero { border-bottom: 1px solid var(--line); background: #fff; }
+    .hero-inner { min-height: 0; padding: 4.5rem 2rem 4rem; display: block; }
+    .hero-inner::after { display: none; }
+    .eyebrow { margin-bottom: 1rem; color: var(--muted); font-size: .75rem; letter-spacing: .1em; }
+    h1 { max-width: none; color: var(--ink); font-size: clamp(3rem,7vw,5rem); font-weight: 650; letter-spacing: -.045em; text-shadow: none; }
+    .dek { max-width: 46rem; margin-top: 1.25rem; color: var(--muted); font-size: clamp(1.05rem,2vw,1.25rem); }
+    .version { margin-top: 1.4rem; padding: .22rem .5rem; color: var(--violet); border: 1px solid var(--line); background: var(--paper); font-weight: 500; }
+    .layout { padding-top: 3rem; grid-template-columns: 13rem minmax(0,1fr); gap: 4.5rem; }
+    nav { top: 4rem; }
+    nav p { color: var(--muted); letter-spacing: .1em; }
+    nav ol { border-left: 1px solid var(--line); }
+    nav a { padding: .38rem .75rem; color: var(--muted); font-size: .76rem; }
+    nav a:hover { color: var(--ink); background: transparent; border-left: 2px solid var(--violet); margin-left: -1px; }
+    section { margin-bottom: 4.75rem; }
+    h2 { margin-bottom: 1.75rem; padding-bottom: .7rem; color: var(--ink); border-bottom: 1px solid var(--line); font-size: clamp(1.55rem,3vw,2rem); font-weight: 650; }
+    h2 .num { color: var(--muted); font-size: .72em; font-weight: 500; }
+    h3 { color: var(--ink); font-size: 1.18rem; font-weight: 650; }
+    h4 { color: var(--ink); }
+    p { max-width: 68ch; }
+    strong { color: var(--ink); }
+    .signal { margin: 1.75rem 0; padding: 1rem 1.2rem; border: 1px solid var(--line); border-left: 3px solid var(--violet); color: var(--ink); background: #fff; box-shadow: none; }
+    .loop { gap: .6rem; }
+    .loop li { min-height: 0; padding: 1rem; border-color: var(--line); background: #fff; }
+    .loop li::before { color: var(--muted); }
+    .loop small, .card p { color: var(--muted); }
+    .cards { gap: .8rem; }
+    .card { padding: 1.15rem; border-color: var(--line); border-radius: 3px; background: #fff; }
+    .resource::after { height: 2px; }
+    .table-wrap { border-color: var(--line); border-radius: 3px; }
+    table { color: var(--ink); background: #fff; }
+    th, td { border-bottom-color: var(--line); }
+    th { color: var(--ink); background: var(--panel-2); font-weight: 650; letter-spacing: 0; }
+    .stages { border-left: 1px solid var(--line); }
+    .stages li::before { left: -.34rem; top: .45rem; width: .55rem; height: .55rem; border: 0; border-radius: 50%; background: var(--violet); }
+    .stages li:last-child::before { background: var(--ochre); }
+    .stages h3 { color: var(--ink); }
+    .path { padding: 1.15rem; border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: 3px; background: #fff; }
+    .path h3 { color: var(--ink); }
+    footer { background: #fff; }
+    @media (max-width: 580px) {
+      body { font-size: 16px; }
+      .hero-inner { min-height: 0; padding: 3rem 1.2rem; }
+      .status span:not(.brand) { display: none; }
+      .status-inner { display: block; }
+    }
+    @media print {
+      :root { --ink: #fff; --panel: #fff; --panel-2: #fff; --paper: #111; --muted: #444; --line: #aaa; --white: #000; --shadow: transparent; }
+      body { background: #fff; color: #111; font-family: Georgia, serif; }
+      .status, nav, .skip { display: none; }
+      .hero { background: #fff; border-bottom: 2px solid #111; }
+      .hero-inner { min-height: 0; padding: 2rem 0; }
+      .hero-inner::after { display: none; }
+      h1 { color: #000; text-shadow: none; font-size: 3rem; }
+      .version { border: 1px solid #111; }
+      .layout { display: block; max-width: none; padding: 2rem 0; }
+      section { break-before: page; }
+      section:first-child { break-before: auto; }
+      .card, .loop li, .path, table { break-inside: avoid; }
+    }
+      .status-inner { grid-template-columns: 1fr auto auto; }
+    .status a { color: inherit; text-decoration: none; }
+    .status a:hover, .status a[aria-current="page"] { color: var(--violet); }
+    @media (max-width: 580px) { .status span:not(.brand) { display: block; } .status-inner { display: grid; grid-template-columns: 1fr auto auto; } }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#content">Skip to document</a>
+
+  <header class="status" aria-label="Documentation navigation">
+    <div class="status-inner">
+      <span class="brand"><a href="index.html">ASHFALL // DOCS</a></span>
+      <span><a href="gdd.html" aria-current="page">GDD</a></span>
+      <span><a href="design-style.html">DESIGN STYLE</a></span>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">Settlement strategy / working design</p>
+      <h1>Ashfall</h1>
+      <p class="dek">Lead a fragile community from a temporary camp to The Capitol—and decide what kind of society deserves to survive.</p>
+      <span class="version">GDD // WORKING DRAFT 0.2</span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav aria-label="Document contents">
+      <p>Archive index</p>
+      <ol>
+        <li><a href="#concept">01 / High concept</a></li>
+        <li><a href="#pillars">02 / Design pillars</a></li>
+        <li><a href="#loop">03 / Development loop</a></li>
+        <li><a href="#resources">04 / Resources</a></li>
+        <li><a href="#growth">05 / Growth</a></li>
+        <li><a href="#goal">06 / Campaign goal</a></li>
+        <li><a href="#prototype">07 / Initial scope</a></li>
+        <li><a href="#questions">08 / Open questions</a></li>
+        <li><a href="#recommendation">09 / Recommendation</a></li>
+      </ol>
+    </nav>
+
+    <main id="content">
+      <section id="concept">
+        <h2><span class="num">01 //</span> High concept</h2>
+        <p><strong>Ashfall</strong> is a compact, turn-based post-apocalyptic settlement strategy game about leading a fragile community from a temporary camp toward a lasting future.</p>
+        <p>The player governs through a settlement view, regional route map, short reports, and consequential events. Each turn balances immediate survival against long-term development. Growth is desirable, but every new resident, building, expedition, and alliance creates new needs and risks.</p>
+        <div class="signal">A completed run leaves behind a concise chronicle of who survived, what the settlement became, and what the player sacrificed to secure its future.</div>
+      </section>
+
+      <section id="pillars">
+        <h2><span class="num">02 //</span> Design pillars</h2>
+        <div class="cards">
+          <article class="card"><h3>Survival before expansion</h3><p>Water, food, shelter, and safety are never completely solved. Expansion increases both resilience and demand.</p></article>
+          <article class="card"><h3>Few, layered decisions</h3><p>Depth comes from timing, trade-offs, and delayed effects—not constant micromanagement.</p></article>
+          <article class="card"><h3>People, not counters</h3><p>Deaths, arrivals, injuries, specialists, dissent, and departures remain visible and meaningful.</p></article>
+          <article class="card"><h3>The region matters</h3><p>Scouting, scavenging, trade, diplomacy, and threats connect city building to the wider map.</p></article>
+          <article class="card"><h3>Growth changes the game</h3><p>Scale creates options, but also factions, maintenance, attention, and political responsibility.</p></article>
+          <article class="card"><h3>Every run is a history</h3><p>Procedural sites, crises, and legacy choices produce stories without erasing careful planning.</p></article>
+        </div>
+      </section>
+
+      <section id="loop">
+        <h2><span class="num">03 //</span> Core development loop</h2>
+        <ol class="loop">
+          <li><strong>Assess</strong><small>Read production, consumption, shortages, health, cohesion, threats, and messages.</small></li>
+          <li><strong>Plan</strong><small>Assign people, choose construction, set policy, and prepare a regional action.</small></li>
+          <li><strong>Commit</strong><small>Spend limited orders and supplies; reserve workers or expose them to risk.</small></li>
+          <li><strong>Resolve</strong><small>Process production, expeditions, events, migration, injuries, and hostile actions.</small></li>
+          <li><strong>Adapt</strong><small>Respond as the settlement, region, shortages, factions, and opportunities change.</small></li>
+        </ol>
+        <div class="signal"><strong>Read pressures → allocate people and supplies → build or reach outward → resolve consequences → grow into new pressures</strong></div>
+
+        <h3>One normal turn</h3>
+        <ul>
+          <li>One major settlement project or upgrade</li>
+          <li>One regional action: scout, scavenge, trade, negotiate, or attack</li>
+          <li>Workforce reassignment</li>
+          <li>One policy or event decision</li>
+          <li>Advance time</li>
+        </ul>
+        <p>The order limit prevents the player from optimizing every problem simultaneously.</p>
+
+        <h3>Three connected play spaces</h3>
+        <div class="cards">
+          <article class="card"><h4>Settlement</h4><p>Build, repair, assign workers, manage capacity, and watch the community change.</p></article>
+          <article class="card"><h4>Region</h4><p>Discover sites and factions, establish routes and outposts, gather supplies, and answer threats.</p></article>
+          <article class="card"><h4>Council</h4><p>Handle petitions, policy, disputes, alliances, leadership, and survival’s social consequences.</p></article>
+        </div>
+        <p>These are not separate mini-games. A discovered water plant may require a workshop to restore and diplomacy—or force—to retain.</p>
+      </section>
+
+      <section id="resources">
+        <h2><span class="num">04 //</span> Resource model</h2>
+        <p>The interface distinguishes <strong>stockpiles</strong>, <strong>people</strong>, <strong>capacities</strong>, and <strong>conditions</strong>. Not every system becomes another spendable currency.</p>
+        <div class="cards">
+          <article class="card resource water"><h3>Water</h3><p>Survival, farming, and some industry. Sourced from wells, collectors, purification, regional sites, and trade.</p></article>
+          <article class="card resource food"><h3>Food</h3><p>Survival and health. Produced through gathering, farming, livestock, hunting, and trade.</p></article>
+          <article class="card resource scrap"><h3>Scrap</h3><p>Construction, repair, tools, and trade. Recovered from ruins and scrapyards or gained through dismantling and tribute.</p></article>
+          <article class="card resource fuel"><h3>Fuel</h3><p>Long expeditions, generators, vehicles, and advanced projects. Powerful, scarce, and maintenance-intensive.</p></article>
+        </div>
+
+        <h3>People</h3>
+        <p><strong>Population</strong> is both the community and the workforce. Residents may be dependents, workers, specialists, injured, away on expeditions, or serving in the militia. Assigning people to one role removes them from another; risking them has human and economic consequences.</p>
+
+        <h3>Capacities</h3>
+        <p>Shelter, storage, production, medical care, workshops, defense, expedition range, and power come from buildings, equipment, and controlled sites. A full granary cannot solve inadequate food production or spoilage.</p>
+
+        <h3>Settlement conditions</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Condition</th><th>Meaning</th><th>Typical effects</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Health</strong></td><td>Nutrition, disease, injury, sanitation, and care</td><td>Labor, mortality, recovery, population growth</td></tr>
+              <tr><td><strong>Cohesion</strong></td><td>Trust, morale, legitimacy, and cooperation</td><td>Productivity, choices, desertion, unrest, faction conflict</td></tr>
+              <tr><td><strong>Threat</strong></td><td>Exposure to specific hostile forces</td><td>Raids, demands, sabotage, escalation</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Knowledge</h3>
+        <p>Knowledge is unlock progress rather than an everyday stockpile. Specialists, archives, faction exchange, and projects advance thresholds that unlock small technology choices.</p>
+      </section>
+
+      <section id="growth">
+        <h2><span class="num">05 //</span> Growth and progression</h2>
+        <p>Advancement requires both population and a defining project. Population alone cannot rush development.</p>
+        <ol class="stages">
+          <li><h3>I. Camp</h3><p>Gathering, tents, water collection, and short scavenging trips.</p><p class="pressure">Pressure: exposure, hunger, illness, no reserve.</p></li>
+          <li><h3>II. Settlement</h3><p>Farming, workshop, clinic, storage, basic militia, and migration.</p><p class="pressure">Pressure: maintenance, sanitation, consumption, raids.</p></li>
+          <li><h3>III. Township</h3><p>Specialists, improved workshops, local markets, and basic outposts.</p><p class="pressure">Pressure: competing interests, maintenance, nearby rivals.</p></li>
+          <li><h3>IV. City</h3><p>Advanced industry, districts, trade routes, council factions, and strong defenses.</p><p class="pressure">Pressure: inequality, infrastructure dependence, diplomacy, coordinated enemies.</p></li>
+          <li><h3>V. The Capitol</h3><p>Major infrastructure, regional governance, and a completed legacy project.</p><p class="pressure">Pressure: final crises, alliance obligations, debate over the future.</p></li>
+        </ol>
+        <div class="signal">A <strong>City</strong> is achieved through population, infrastructure, and specialization. Becoming <strong>The Capitol</strong> is political: the City earns regional legitimacy through alliances, influence, controlled routes, and its legacy.</div>
+
+        <h3>Population growth</h3>
+        <p>Early growth comes primarily through migration and rescued survivors. Spare shelter, stable supplies, health, cohesion, reputation, relationships, and policy attract newcomers. Overcrowding creates sickness, ration pressure, and dissent instead of meeting an arbitrary hard cap.</p>
+
+        <h3>Development branches</h3>
+        <div class="cards">
+          <article class="card"><h4>Sustenance</h4><p>Water security, farming, storage, medicine.</p></article>
+          <article class="card"><h4>Industry</h4><p>Repair, construction, power, vehicles, scrap recovery.</p></article>
+          <article class="card"><h4>Security</h4><p>Scouting, fortification, militia, intelligence.</p></article>
+          <article class="card"><h4>Society</h4><p>Cohesion, education, diplomacy, migration, governance.</p></article>
+        </div>
+        <h3>Anti-snowball principle</h3>
+        <p>Prosperity creates responsibility. More people consume more; infrastructure attracts attention; specialists expect conditions; outposts need supply; alliances create obligations; power increases dependence on fuel and maintenance. Success stays strategically interesting without feeling punitive.</p>
+      </section>
+
+      <section id="goal">
+        <h2><span class="num">06 //</span> Campaign goal</h2>
+        <p>The recommended campaign combines a <strong>finite survival horizon</strong> with a <strong>chosen legacy project</strong>. The community must endure worsening regional conditions and commit to a durable future.</p>
+        <div class="paths">
+          <article class="path"><h3>Green Haven</h3><p>Restore regional water and build a self-sustaining agricultural society.</p><p><strong>Focus:</strong> sustenance, health, cooperation.</p></article>
+          <article class="path"><h3>The Network</h3><p>Unite settlements through trade, radio, and mutual defense.</p><p><strong>Focus:</strong> diplomacy, routes, reputation, cohesion.</p></article>
+          <article class="path"><h3>Iron Refuge</h3><p>Build a defended, powered stronghold capable of surviving alone.</p><p><strong>Focus:</strong> industry, fuel, scrap, security.</p></article>
+        </div>
+        <p>Each path changes the final crises, allies, enemies, and epilogue. None is the universally “good” ending.</p>
+
+        <h3>Victory and failure</h3>
+        <div class="cards">
+          <article class="card"><h4>Victory</h4><ul><li>Survive the final regional crisis</li><li>Complete one legacy project</li><li>Retain a viable population</li><li>Avoid total social collapse</li></ul></article>
+          <article class="card"><h4>Failure</h4><ul><li>No viable population remains</li><li>The settlement is destroyed or abandoned</li><li>Cohesion collapses irreversibly</li><li>The deadline arrives without a viable legacy</li></ul></article>
+        </div>
+        <p>Severe setbacks should usually remain recoverable. A shortage, lost expedition, or raid creates a difficult chapter—not an automatic ending.</p>
+
+        <h3>Campaign length</h3>
+        <p>Prototype target: <strong>40 turns</strong> across four chapters—establish the camp; secure production and explore; manage factions and regional threats; then complete the legacy and face the final crisis. The time represented by a turn remains a playtesting decision.</p>
+      </section>
+
+      <section id="prototype">
+        <h2><span class="num">07 //</span> Initial playable scope</h2>
+        <div class="cards">
+          <article class="card"><h3>Include</h3><ul><li>One settlement and a small route map</li><li>Four stockpiles and population assignment</li><li>Five to eight buildings</li><li>Scouting and scavenging</li><li>One neutral faction and one threat</li><li>A small event deck</li><li>Two settlement stages</li><li>A 12–16 turn scenario</li></ul></article>
+          <article class="card"><h3>Delay</h3><ul><li>Tactical battle maps</li><li>Detailed individual simulation</li><li>Multiple controlled settlements</li><li>Large technology trees</li><li>Extensive diplomacy</li><li>Multiple vehicle types</li><li>Endless mode</li></ul></article>
+        </div>
+      </section>
+
+      <section id="questions">
+        <h2><span class="num">08 //</span> Questions still open</h2>
+        <ol>
+          <li>Is <strong>Ashfall</strong> the final title or a visual-concept codename?</li>
+          <li>Is the central fantasy permanent rebuilding, or can migration remain a possible outcome?</li>
+          <li>Should the tone favor hopeful reconstruction, bleak survival, or a balance?</li>
+          <li>Should conflict remain strategic or eventually use a compact tactical battle screen?</li>
+          <li>Is the regional catastrophe known, gradually discovered, or different every campaign?</li>
+        </ol>
+      </section>
+
+      <section id="recommendation">
+        <h2><span class="num">09 //</span> Current recommendation</h2>
+        <div class="signal">
+          Build around <strong>Water, Food, Scrap, Fuel, and People</strong>. Track <strong>Health, Cohesion, and visible threats</strong>. Advance through <strong>Camp → Settlement → Township → City → The Capitol</strong>.
+        </div>
+        <p>Use a 40-turn finite campaign in which the player survives escalating pressure and completes one of several legacy projects. Ashfall’s purpose is not simply making numbers rise: the player decides what kind of society deserves to survive.</p>
+      </section>
+    </main>
+  </div>
+
+  <footer>ASHFALL // GAME DESIGN DOCUMENT // END OF CURRENT RECORD</footer>
+</body>
+</html>
