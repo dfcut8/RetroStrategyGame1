@@ -270,7 +270,12 @@
       section:first-child { break-before: auto; }
       .card, .loop li, .path, table { break-inside: avoid; }
     }
-      .status-inner { grid-template-columns: 1fr auto auto; }
+      .visual-links { display:flex; flex-wrap:wrap; gap:.55rem; margin:1rem 0 1.5rem; }
+    .visual-links a, .screenshot-link { display:inline-block; color:var(--violet); font-family:"Agave Mono",Agave,"Agave Nerd Font Mono",Consolas,monospace; font-size:.75rem; text-decoration:none; }
+    .visual-links a { padding:.35rem .55rem; border:1px solid var(--line); border-radius:3px; background:#fff; }
+    .visual-links a:hover, .screenshot-link:hover { color:var(--ink); border-color:var(--violet); }
+    .screenshot-link { margin-top:.7rem; }
+    .status-inner { grid-template-columns: 1fr auto auto; }
     .status a { color: inherit; text-decoration: none; }
     .status a:hover, .status a[aria-current="page"] { color: var(--violet); }
     @media (max-width: 580px) { .status span:not(.brand) { display: block; } .status-inner { display: grid; grid-template-columns: 1fr auto auto; } }
@@ -352,12 +357,17 @@
           <li>Advance time</li>
         </ul>
         <p>The order limit prevents the player from optimizing every problem simultaneously.</p>
+        <div class="visual-links" aria-label="Turn and expedition screenshots">
+          <a href="visual-concepts/supremacy-inspired-set/01-ashfall-command-console.png">Ruler dashboard screenshot ↗</a>
+          <a href="visual-concepts/supremacy-inspired-set/03-scout-team-loadout.png">Scout preparation screenshot ↗</a>
+          <a href="visual-concepts/the-tribe-inspired-set/central-hub-update/03-mutant-ambush-central-hub.png">Encounter resolution screenshot ↗</a>
+        </div>
 
         <h3>Three connected play spaces</h3>
         <div class="cards">
-          <article class="card"><h4>Settlement</h4><p>Build, repair, assign workers, manage capacity, and watch the community change.</p></article>
-          <article class="card"><h4>Region</h4><p>Discover sites and factions, establish routes and outposts, gather supplies, and answer threats.</p></article>
-          <article class="card"><h4>Council</h4><p>Handle petitions, policy, disputes, alliances, leadership, and survival’s social consequences.</p></article>
+          <article class="card"><h4>Settlement</h4><p>Build, repair, assign workers, manage capacity, and watch the community change.</p><a class="screenshot-link" href="visual-concepts/01-settlement-growth.png">Settlement growth screenshot ↗</a></article>
+          <article class="card"><h4>Region</h4><p>Discover sites and factions, establish routes and outposts, gather supplies, and answer threats.</p><a class="screenshot-link" href="visual-concepts/02-wasteland-exploration.png">Regional exploration screenshot ↗</a><br><a class="screenshot-link" href="visual-concepts/the-tribe-inspired-set/central-hub-update/01-scrapyard-search-central-hub.png">Scavenging screenshot ↗</a></article>
+          <article class="card"><h4>Council</h4><p>Handle petitions, policy, disputes, alliances, leadership, and survival’s social consequences.</p><a class="screenshot-link" href="visual-concepts/03-faction-negotiation.png">Faction negotiation screenshot ↗</a><br><a class="screenshot-link" href="visual-concepts/supremacy-inspired-set/02-rusted-choir-intelligence.png">Faction intelligence screenshot ↗</a></article>
         </div>
         <p>These are not separate mini-games. A discovered water plant may require a workshop to restore and diplomacy—or force—to retain.</p>
       </section>
