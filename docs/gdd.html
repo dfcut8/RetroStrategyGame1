@@ -270,11 +270,7 @@
       section:first-child { break-before: auto; }
       .card, .loop li, .path, table { break-inside: avoid; }
     }
-      .visual-links { display:flex; flex-wrap:wrap; gap:.55rem; margin:1rem 0 1.5rem; }
-    .visual-links a, .screenshot-link { display:inline-block; color:var(--violet); font-family:"Agave Mono",Agave,"Agave Nerd Font Mono",Consolas,monospace; font-size:.75rem; text-decoration:none; }
-    .visual-links a { padding:.35rem .55rem; border:1px solid var(--line); border-radius:3px; background:#fff; }
-    .visual-links a:hover, .screenshot-link:hover { color:var(--ink); border-color:var(--violet); }
-    .screenshot-link { margin-top:.7rem; }
+
     .status-inner { grid-template-columns: 1fr auto auto; }
     .status a { color: inherit; text-decoration: none; }
     .status a:hover, .status a[aria-current="page"] { color: var(--violet); }
@@ -322,9 +318,14 @@
     .path { padding:.9rem 0; border:0; border-bottom:1px solid var(--line); border-radius:0; background:transparent; }
     .path:first-child { border-top:1px solid var(--line); }
     .path h3 { margin:0 0 .2rem; color:#eceef1; }
-    .visual-links { gap:1rem; }
-    .visual-links a { padding:0; border:0; background:transparent; text-decoration:underline; text-underline-offset:.2em; }
-    .screenshot-link { margin-top:.35rem; text-decoration:underline; text-underline-offset:.2em; }
+    .visual-gallery { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.85rem; max-width:82rem; margin:1rem 0 1.5rem; }
+    .visual-gallery--three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .visual-gallery figure,.inline-visual { margin:0; }
+    .visual-gallery img,.inline-visual img { display:block; width:100%; height:auto; border:1px solid var(--line); background:var(--panel); }
+    .inline-visual { max-width:58rem; margin-top:.8rem; }
+    figcaption { margin-top:.35rem; color:var(--muted); font-family:"Agave Mono",Agave,"Agave Nerd Font Mono",Consolas,monospace; font-size:.72rem; }
+    @media(max-width:900px){ .visual-gallery--three{grid-template-columns:1fr 1fr} }
+    @media(max-width:580px){ .visual-gallery,.visual-gallery--three{grid-template-columns:1fr} }
     footer { border-color:var(--line); background:var(--panel); }
     @media(max-width:900px){ .layout{grid-template-columns:1fr}.loop li{grid-template-columns:2rem 7rem minmax(0,1fr)} }
     @media(max-width:580px){ body{font-size:14px}.hero-inner{padding:2.4rem 1.2rem 2rem}.loop li{display:block}.loop li::before,.loop strong{display:inline-block;margin-right:.5rem} }
@@ -406,17 +407,17 @@
           <li>Advance time</li>
         </ul>
         <p>The order limit prevents the player from optimizing every problem simultaneously.</p>
-        <div class="visual-links" aria-label="Turn and expedition screenshots">
-          <a href="visual-concepts/supremacy-inspired-set/01-ashfall-command-console.png">Ruler dashboard screenshot ↗</a>
-          <a href="visual-concepts/supremacy-inspired-set/03-scout-team-loadout.png">Scout preparation screenshot ↗</a>
-          <a href="visual-concepts/the-tribe-inspired-set/central-hub-update/03-mutant-ambush-central-hub.png">Encounter resolution screenshot ↗</a>
+        <div class="visual-gallery visual-gallery--three" aria-label="Turn and expedition screenshots">
+          <figure><img src="visual-concepts/supremacy-inspired-set/01-ashfall-command-console.png" alt="Ashfall ruler dashboard showing settlement resources and command options" loading="lazy"><figcaption>Ruler dashboard</figcaption></figure>
+          <figure><img src="visual-concepts/supremacy-inspired-set/03-scout-team-loadout.png" alt="Scout team preparation and loadout screen" loading="lazy"><figcaption>Scout preparation</figcaption></figure>
+          <figure><img src="visual-concepts/the-tribe-inspired-set/central-hub-update/03-mutant-ambush-central-hub.png" alt="Mutant ambush encounter displayed within the central regional hub" loading="lazy"><figcaption>Encounter resolution</figcaption></figure>
         </div>
 
         <h3>Three connected play spaces</h3>
         <div class="cards">
-          <article class="card"><h4>Settlement</h4><p>Build, repair, assign workers, manage capacity, and watch the community change.</p><a class="screenshot-link" href="visual-concepts/01-settlement-growth.png">Settlement growth screenshot ↗</a></article>
-          <article class="card"><h4>Region</h4><p>Discover sites and factions, establish routes and outposts, gather supplies, and answer threats.</p><a class="screenshot-link" href="visual-concepts/02-wasteland-exploration.png">Regional exploration screenshot ↗</a><br><a class="screenshot-link" href="visual-concepts/the-tribe-inspired-set/central-hub-update/01-scrapyard-search-central-hub.png">Scavenging screenshot ↗</a></article>
-          <article class="card"><h4>Council</h4><p>Handle petitions, policy, disputes, alliances, leadership, and survival’s social consequences.</p><a class="screenshot-link" href="visual-concepts/03-faction-negotiation.png">Faction negotiation screenshot ↗</a><br><a class="screenshot-link" href="visual-concepts/supremacy-inspired-set/02-rusted-choir-intelligence.png">Faction intelligence screenshot ↗</a></article>
+          <article class="card"><h4>Settlement</h4><p>Build, repair, assign workers, manage capacity, and watch the community change.</p><figure class="inline-visual"><img src="visual-concepts/01-settlement-growth.png" alt="Ashfall settlement growth view showing buildings, population, water, food, shelter, morale, and scrap" loading="lazy"><figcaption>Settlement growth view</figcaption></figure></article>
+          <article class="card"><h4>Region</h4><p>Discover sites and factions, establish routes and outposts, gather supplies, and answer threats.</p><div class="visual-gallery"><figure><img src="visual-concepts/02-wasteland-exploration.png" alt="Wasteland regional exploration map with routes, sites, scouts, and fog of war" loading="lazy"><figcaption>Regional exploration</figcaption></figure><figure><img src="visual-concepts/the-tribe-inspired-set/central-hub-update/01-scrapyard-search-central-hub.png" alt="Scrapyard scavenging operation displayed within the central regional hub" loading="lazy"><figcaption>Scavenging operation</figcaption></figure></div></article>
+          <article class="card"><h4>Council</h4><p>Handle petitions, policy, disputes, alliances, leadership, and survival’s social consequences.</p><div class="visual-gallery"><figure><img src="visual-concepts/03-faction-negotiation.png" alt="Negotiation screen between Ashfall and a regional faction" loading="lazy"><figcaption>Faction negotiation</figcaption></figure><figure><img src="visual-concepts/supremacy-inspired-set/02-rusted-choir-intelligence.png" alt="Intelligence report for the Rusted Choir faction" loading="lazy"><figcaption>Faction intelligence</figcaption></figure></div></article>
         </div>
         <p>These are not separate mini-games. A discovered water plant may require a workshop to restore and diplomacy—or force—to retain.</p>
       </section>
