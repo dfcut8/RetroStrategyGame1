@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Ashfall design style compass and project guardrails.">
-  <meta name="theme-color" content="#f7f5f0">
+  <meta name="theme-color" content="#111318">
   <title>Design Style — Ashfall</title>
   <style>
     :root { --ink:#292724; --paper:#f7f5f0; --surface:#fff; --muted:#69645e; --line:#d9d4cc; --accent:#625b86; --accent-soft:#efedf5; --content:68rem; }
@@ -45,7 +45,35 @@
     .contents ul { columns:2; margin:.7rem 0 0; padding-left:1.2rem; }
     .guardrails { columns:2; padding-left:1.2rem; }
     footer { padding:2rem 1.5rem; border-top:1px solid var(--line); color:var(--muted); background:var(--surface); text-align:center; font-family:"Agave Mono",Agave,"Agave Nerd Font Mono",Consolas,monospace; font-size:.72rem; }
-    @media(max-width:650px){ body{font-size:16px}.site-header{align-items:flex-start;flex-direction:column;gap:.45rem}.wrap{padding-top:3rem}.cards{grid-template-columns:1fr}.contents ul,.guardrails{columns:1} }  </style>
+    @media(max-width:650px){ body{font-size:16px}.site-header{align-items:flex-start;flex-direction:column;gap:.45rem}.wrap{padding-top:3rem}.cards{grid-template-columns:1fr}.contents ul,.guardrails{columns:1} }
+    /* Dense dark documentation theme */
+    :root { --ink:#d9dce1; --paper:#111318; --surface:#171a20; --muted:#969ca6; --line:#303641; --accent:#aaa2d8; --accent-soft:#202331; --content:88rem; }
+    body { color:var(--ink); background:var(--paper); font-size:15px; line-height:1.55; }
+    a { color:var(--accent); }
+    a:hover { color:#fff; }
+    .site-header { border-color:var(--line); background:rgba(17,19,24,.96); }
+    .logo { color:#f1f2f4; }
+    .site-nav a { color:var(--muted); }
+    .wrap { max-width:var(--content); padding-top:3.25rem; }
+    h1 { font-size:clamp(2.5rem,5vw,4rem); color:#f1f2f4; }
+    h2 { margin-top:3.5rem; border-color:var(--line); font-size:1.5rem; }
+    h3 { margin-top:1.75rem; color:#eceef1; }
+    .intro { max-width:70rem; color:var(--muted); font-size:1.05rem; }
+    p { max-width:90ch; }
+    .cards { display:block; max-width:76rem; margin-top:2rem; }
+    .card { padding:1rem 0; border:0; border-bottom:1px solid var(--line); border-radius:0; background:transparent; }
+    .card:first-child { border-top:1px solid var(--line); }
+    .card:hover { border-color:var(--line); }
+    .card h2 { margin:.25rem 0; font-size:1.2rem; }
+    .card p { color:var(--muted); }
+    blockquote { border-left-color:var(--accent); background:var(--surface); }
+    .contents { padding:.8rem 0; border:0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:transparent; }
+    table { color:var(--ink); background:var(--surface); }
+    th { background:#20242c; }
+    th,td,.table-wrap { border-color:var(--line); }
+    footer { border-color:var(--line); background:var(--surface); }
+    @media(max-width:650px){ body{font-size:14px}.wrap{padding-top:2.5rem} }
+  </style>
 </head>
 <body>
   <header class="site-header">

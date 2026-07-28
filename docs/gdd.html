@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Ashfall game design document: a compact post-apocalyptic settlement strategy game.">
-  <meta name="theme-color" content="#f7f5f0">
+  <meta name="theme-color" content="#111318">
   <title>Ashfall — Game Design Document</title>
   <style>
     :root {
@@ -279,6 +279,55 @@
     .status a { color: inherit; text-decoration: none; }
     .status a:hover, .status a[aria-current="page"] { color: var(--violet); }
     @media (max-width: 580px) { .status span:not(.brand) { display: block; } .status-inner { display: grid; grid-template-columns: 1fr auto auto; } }
+
+    /* Dense dark documentation theme */
+    :root { --ink:#d9dce1; --panel:#171a20; --panel-2:#20242c; --surface:#171a20; --paper:#111318; --muted:#969ca6; --line:#303641; --violet:#aaa2d8; --ochre:#cda869; --rust:#c47765; --cyan:#76b7b3; --olive:#9cab6a; --white:#f1f2f4; --content:92rem; }
+    body { color:var(--ink); background:var(--paper); font-size:15px; line-height:1.55; }
+    a { color:var(--violet); }
+    a:hover { color:#fff; }
+    .status { border-color:var(--line); background:rgba(17,19,24,.96); color:var(--muted); }
+    .status .brand,.status .brand a { color:#f1f2f4; }
+    .status span { border-color:var(--line); }
+    .hero { border-color:var(--line); background:var(--paper); }
+    .hero-inner { max-width:var(--content); padding:3rem 2rem 2.75rem; }
+    h1 { color:#f1f2f4; font-size:clamp(2.7rem,5vw,4rem); }
+    .dek { max-width:70rem; color:var(--muted); font-size:1.05rem; }
+    .version { color:var(--violet); border-color:var(--line); background:var(--surface); }
+    .layout { max-width:var(--content); padding-top:2.5rem; grid-template-columns:12rem minmax(0,1fr); gap:2.75rem; }
+    nav ol,h2,.table-wrap { border-color:var(--line); }
+    nav a { color:var(--muted); }
+    main p { max-width:95ch; }
+    section { margin-bottom:3.75rem; }
+    h2 { margin-bottom:1.25rem; color:#f1f2f4; border-color:var(--line); font-size:1.55rem; }
+    h3 { margin-top:1.9rem; color:#eceef1; font-size:1.08rem; }
+    h4,strong { color:#eceef1; }
+    .signal { padding:.7rem 0 .7rem 1rem; border:0; border-left:2px solid var(--violet); background:transparent; }
+    .loop { display:block; margin:1.25rem 0; }
+    .loop li { min-height:0; display:grid; grid-template-columns:2.2rem 8rem minmax(0,1fr); gap:.75rem; align-items:baseline; padding:.7rem 0; border:0; border-bottom:1px solid var(--line); background:transparent; }
+    .loop li:first-child { border-top:1px solid var(--line); }
+    .loop li::before { margin:0; color:var(--muted); }
+    .loop small { margin:0; color:var(--muted); }
+    .cards { display:block; margin:1rem 0; }
+    .card { padding:.8rem 0; border:0; border-bottom:1px solid var(--line); border-radius:0; background:transparent; }
+    .card:first-child { border-top:1px solid var(--line); }
+    .card h3,.card h4 { margin:0 0 .2rem; }
+    .card p { max-width:95ch; margin:.2rem 0; color:var(--muted); }
+    .resource::after { display:none; }
+    table { color:var(--ink); background:var(--panel); }
+    th { color:#eceef1; background:var(--panel-2); }
+    th,td { border-color:var(--line); }
+    .stages { border-color:var(--line); }
+    .stages h3 { color:#eceef1; }
+    .paths { display:block; }
+    .path { padding:.9rem 0; border:0; border-bottom:1px solid var(--line); border-radius:0; background:transparent; }
+    .path:first-child { border-top:1px solid var(--line); }
+    .path h3 { margin:0 0 .2rem; color:#eceef1; }
+    .visual-links { gap:1rem; }
+    .visual-links a { padding:0; border:0; background:transparent; text-decoration:underline; text-underline-offset:.2em; }
+    .screenshot-link { margin-top:.35rem; text-decoration:underline; text-underline-offset:.2em; }
+    footer { border-color:var(--line); background:var(--panel); }
+    @media(max-width:900px){ .layout{grid-template-columns:1fr}.loop li{grid-template-columns:2rem 7rem minmax(0,1fr)} }
+    @media(max-width:580px){ body{font-size:14px}.hero-inner{padding:2.4rem 1.2rem 2rem}.loop li{display:block}.loop li::before,.loop strong{display:inline-block;margin-right:.5rem} }
   </style>
 </head>
 <body>
