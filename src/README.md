@@ -10,7 +10,7 @@ The Godot project lives entirely in this `src` directory.
 - Stretch mode: viewport, with 4:3 aspect preserved and integer scaling
 - Canvas texture filter: nearest
 - Mipmap filtering: disabled; current 2D assets do not generate mipmaps
-- 2D transforms and vertices: snapped to whole pixels
+- 2D transforms: snapped to whole pixels; global vertex snapping stays off to avoid double-snap jitter
 - Renderer: Compatibility
 
 Godot 4 no longer stores filtering in each texture's import options. Filtering is enforced through
