@@ -1,0 +1,4 @@
+interface:
+  display_name: "Generate Ashfall Assets"
+  short_description: "Create game-ready Ashfall pixel art assets"
+  default_prompt: "Use $generate-ashfall-assets to create a game-ready pixel art asset for Ashfall."

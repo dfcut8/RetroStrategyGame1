@@ -1,0 +1,20 @@
+GIMP Palette
+Name: Ashfall Core
+Columns: 4
+#
+  9   8  13	Shadow
+ 23  20  31	Ink
+ 36  32  45	Panel
+ 48  42  58	Panel 2
+ 93  83 107	Line
+170 162 178	Muted
+228 221 204	Paper
+244 239 226	White
+138 127 200	Violet
+197 139  50	Ochre
+181  87  55	Rust
+101 198 189	Cyan
+141 150  82	Olive
+111  77  46	Earth
+122 116 107	Metal
+217 182  95	Lantern
