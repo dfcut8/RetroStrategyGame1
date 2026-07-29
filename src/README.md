@@ -26,7 +26,7 @@ This first kit deliberately covers the Camp chapter described by the GDD:
 - local scrap cache;
 - Permanent Hub defining project.
 
-Runtime PNGs are final game assets. Asset generation and conversion live outside the Godot project
-in the repository-local `.agents/skills/generate-ashfall-assets` skill.
+Runtime PNGs are final game assets. Raster generation, conversion, palette control, and optional
+animation use the repository-local `.agents/skills/pixel-art` skill.
 
 A gameplay main scene is intentionally deferred beyond this asset/bootstrap milestone.
