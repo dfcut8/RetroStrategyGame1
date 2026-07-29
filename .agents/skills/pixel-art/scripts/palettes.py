@@ -1,10 +1,29 @@
 """Named RGB palettes for pixel_art() and pixel_art_video().
 
-Palette RGB values sourced from pixel-art-studio (MIT License)
-https://github.com/Synero/pixel-art-studio — see ATTRIBUTION.md.
+Generic palette values are sourced from pixel-art-studio (MIT License):
+https://github.com/Synero/pixel-art-studio. Ashfall palettes are project-specific.
+See ATTRIBUTION.md.
 """
 
 PALETTES = {
+    # ── Ashfall project palettes ────────────────────────────────────────
+    "ASHFALL_CORE": [
+        (9, 8, 13),       # Shadow
+        (23, 20, 31),     # Ink
+        (93, 83, 107),    # Line
+        (228, 221, 204),  # Paper
+        (197, 139, 50),   # Ochre
+        (181, 87, 55),    # Rust
+        (101, 198, 189),  # Cyan
+        (141, 150, 82),   # Olive
+    ],
+    "ASHFALL_16": [
+        (9, 8, 13), (23, 20, 31), (36, 32, 45), (48, 42, 58),
+        (93, 83, 107), (170, 162, 178), (228, 221, 204), (244, 239, 226),
+        (138, 127, 200), (197, 139, 50), (181, 87, 55), (101, 198, 189),
+        (141, 150, 82), (111, 77, 46), (122, 116, 107), (217, 182, 95),
+    ],
+
     # ── Hardware palettes ───────────────────────────────────────────────
     "NES": [
         (0, 0, 0), (124, 124, 124), (0, 0, 252), (0, 0, 188), (68, 40, 188),
@@ -159,9 +178,12 @@ def build_palette_image(palette_name):
     flat = []
     for (r, g, b) in PALETTES[palette_name]:
         flat.extend([r, g, b])
-    # Pad to 768 bytes (256 colors) as PIL requires
+    # Pad to 768 bytes (256 colors) as Pillow requires. Repeat a declared color
+    # instead of introducing black as an accidental extra palette entry.
+    padding_color = flat[-3:]
     while len(flat) < 768:
-        flat.append(0)
+        flat.extend(padding_color)
+    flat = flat[:768]
     pal_img = Image.new("P", (1, 1))
     pal_img.putpalette(flat)
     return pal_img
