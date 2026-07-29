@@ -5,19 +5,29 @@
 For every user prompt that requires file changes in this repository, perform the work in a
 dedicated Git worktree on a dedicated branch. Do not edit files in the primary checkout.
 
-1. Before changing files, create a new branch named `codex/<prompt-slug>` from the intended base
-   branch and a separate worktree whose directory name is `<prompt-slug>`. The branch slug and
-   worktree directory name must match exactly; for example, branch `codex/update-orders` uses
-   worktree directory `update-orders`.
-2. Keep the prompt's changes isolated to that worktree and branch. Do not reuse a worktree or
+1. Before changing files, inspect the checkout supplied for the task with
+   `git status --short --branch`. Do not discard, stash, relocate, or build on existing changes in
+   order to obtain a clean state.
+2. Refresh the intended base branch with `git fetch --prune origin`. For a normal task based on
+   `main`, create the task branch directly from the refreshed `origin/main`; do not check out or
+   pull a local `main` first. If the fetch fails, do not begin file changes from a potentially
+   stale base unless the user explicitly approves that fallback.
+3. Create a new branch named `codex/<prompt-slug>` from the refreshed remote-tracking base and a
+   separate worktree whose directory name is `<prompt-slug>`. The branch slug and worktree
+   directory name must match exactly; for example, branch `codex/update-orders` uses worktree
+   directory `update-orders`.
+4. Before editing, verify the new worktree is on the intended branch and that
+   `git status --short` is empty. If it is not clean, stop and resolve the worktree setup without
+   altering user-owned changes.
+5. Keep the prompt's changes isolated to that worktree and branch. Do not reuse a worktree or
    branch created for a different prompt.
-3. Treat a file-changing prompt as authorization to create the worktree and branch, commit the
+6. Treat a file-changing prompt as authorization to create the worktree and branch, commit the
    requested changes, push that branch, and open or update its pull request.
-4. Open a pull request into the intended base branch, normally `main` (or `master` when that is
+7. Open a pull request into the intended base branch, normally `main` (or `master` when that is
    the repository's base). Never merge the work directly into `main` or `master`.
-5. Do not merge the pull request unless the user explicitly requests it, including through the
+8. Do not merge the pull request unless the user explicitly requests it, including through the
    `/lgtm` workflow below.
-6. In the final response, provide the pull request link and explicitly ask the user to review it.
+9. In the final response, provide the pull request link and explicitly ask the user to review it.
 
 Read-only prompts do not require a worktree or branch.
 
