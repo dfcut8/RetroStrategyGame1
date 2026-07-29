@@ -1,5 +1,26 @@
 # Project Agent Instructions
 
+## Isolated worktree and pull request workflow
+
+For every user prompt that requires file changes in this repository, perform the work in a
+dedicated Git worktree on a dedicated branch. Do not edit files in the primary checkout.
+
+1. Before changing files, create a new branch named `codex/<prompt-slug>` from the intended base
+   branch and a separate worktree whose directory name is `<prompt-slug>`. The branch slug and
+   worktree directory name must match exactly; for example, branch `codex/update-orders` uses
+   worktree directory `update-orders`.
+2. Keep the prompt's changes isolated to that worktree and branch. Do not reuse a worktree or
+   branch created for a different prompt.
+3. Treat a file-changing prompt as authorization to create the worktree and branch, commit the
+   requested changes, push that branch, and open or update its pull request.
+4. Open a pull request into the intended base branch, normally `main` (or `master` when that is
+   the repository's base). Never merge the work directly into `main` or `master`.
+5. Do not merge the pull request unless the user explicitly requests it, including through the
+   `/lgtm` workflow below.
+6. In the final response, provide the pull request link and explicitly ask the user to review it.
+
+Read-only prompts do not require a worktree or branch.
+
 ## GDD and style guard
 
 For every task that changes files in this repository, verify the result against:
@@ -45,7 +66,9 @@ After any task that changes files in this repository, and before the final respo
    - local changes or commits are not pushed, with a concise summary; or
    - remote synchronization could not be verified, with the reason.
 
-Checking synchronization does not authorize committing or pushing. Only commit or push when the user's request explicitly includes that action.
+The isolated worktree and pull request workflow above authorizes committing and pushing for
+file-changing prompts. Outside that workflow, only commit or push when the user's request
+explicitly includes that action.
 
 ## `/lgtm` pull request workflow
 
