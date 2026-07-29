@@ -1,0 +1,4 @@
+interface:
+  display_name: "LGTM"
+  short_description: "Merge the current branch pull request"
+  default_prompt: "Use $lgtm to merge the open pull request for the current branch."
