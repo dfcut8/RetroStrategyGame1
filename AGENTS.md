@@ -9,22 +9,31 @@ normalize any changed text file that does not.
 ## Isolated worktree and pull request workflow
 
 For every user prompt that requires file changes in this repository, perform the work in a
-dedicated Git worktree on a dedicated branch. Do not edit files in the primary checkout.
+dedicated Git worktree on a dedicated branch based on the current remote base. Do not edit files
+in the primary checkout, and do not create a second worktree when Codex already started the task
+in a dedicated worktree.
 
 1. Before changing files, inspect the checkout supplied for the task with
-   `git status --short --branch`. Do not discard, stash, relocate, or build on existing changes in
-   order to obtain a clean state.
+   `git status --short --branch` and `git worktree list --porcelain`. Determine whether the
+   supplied checkout is the primary checkout or a dedicated worktree. Do not discard, stash,
+   relocate, or build on existing changes in order to obtain a clean state.
 2. Refresh the intended base branch with `git fetch --prune origin`. For a normal task based on
-   `main`, create the task branch directly from the refreshed `origin/main`; do not check out or
-   pull a local `main` first. If the fetch fails, do not begin file changes from a potentially
-   stale base unless the user explicitly approves that fallback.
-3. Create a new branch named `codex/<prompt-slug>` from the refreshed remote-tracking base and a
-   separate worktree whose directory name is `<prompt-slug>`. The branch slug and worktree
-   directory name must match exactly; for example, branch `codex/update-orders` uses worktree
-   directory `update-orders`.
-4. Before editing, verify the new worktree is on the intended branch and that
-   `git status --short` is empty. If it is not clean, stop and resolve the worktree setup without
-   altering user-owned changes.
+   `main`, use the refreshed `origin/main`; do not check out or pull a local `main` first. If the
+   fetch fails, do not begin file changes from a potentially stale base unless the user explicitly
+   approves that fallback.
+3. Use a new branch named `codex/<prompt-slug>` created directly from the refreshed
+   remote-tracking base.
+   - If Codex already started the task in a dedicated worktree, keep that worktree and create or
+     switch to the task branch there. Do not create a nested or sibling worktree for the same
+     prompt. A Codex-managed worktree may have an opaque directory name and may initially use a
+     detached `HEAD`; neither condition requires replacing it.
+   - If the supplied checkout is the primary checkout, create a separate worktree for the task
+     branch. For manually created worktrees, the directory name must be `<prompt-slug>` so it
+     matches the branch suffix; for example, branch `codex/update-orders` uses worktree directory
+     `update-orders`.
+4. Before editing, verify the selected worktree is on the intended task branch, is based on the
+   refreshed remote-tracking base, and has an empty `git status --short`. If it is not clean, stop
+   and resolve the worktree setup without altering user-owned changes.
 5. Keep the prompt's changes isolated to that worktree and branch. Do not reuse a worktree or
    branch created for a different prompt.
 6. Treat a file-changing prompt as authorization to create the worktree and branch, commit the
