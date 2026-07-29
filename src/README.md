@@ -16,9 +16,9 @@ Godot 4 no longer stores filtering in each texture's import options. Filtering i
 the project-wide CanvasItem setting. PNG imports remain lossless with mipmap generation disabled,
 which is Godot's default for 2D textures.
 
-## Initial asset scope
+## Current prototype scope
 
-This first kit deliberately covers the Camp chapter described by the GDD:
+The runtime assets cover the Camp chapter described by the GDD:
 
 - ash-wasteland ground;
 - makeshift tarp shelter;
@@ -26,7 +26,13 @@ This first kit deliberately covers the Camp chapter described by the GDD:
 - local scrap cache;
 - Permanent Hub defining project.
 
+The playable Settlement prototype adds:
+
+- a compact aggregate population report;
+- aggregate Shelter, Health, Food Output, Workshop, Migration Appeal, and Cohesion effects;
+- six selectable build plots;
+- five permanent buildings: Bunkhouse, Clinic, Greenhouse, Workshop, and Commons Hall;
+- visible Scrap costs and projected effects before building.
+
 Runtime PNGs are final game assets. Asset generation and conversion live outside the Godot project
 in the repository-local `.agents/skills/generate-ashfall-assets` skill.
-
-A gameplay main scene is intentionally deferred beyond this asset/bootstrap milestone.
