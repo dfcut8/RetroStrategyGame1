@@ -1,5 +1,11 @@
 # Project Agent Instructions
 
+## Line endings
+
+Use Unix/Linux-style LF (`\n`) line endings for every text file. Never introduce Windows-style
+CRLF (`\r\n`) line endings. Before committing, verify that all changed text files use LF and
+normalize any changed text file that does not.
+
 ## Isolated worktree and pull request workflow
 
 For every user prompt that requires file changes in this repository, perform the work in a
