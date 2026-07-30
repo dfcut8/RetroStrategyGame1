@@ -1,8 +1,10 @@
 # Agentic Considerations to Try in the Future
 
-> Status: evaluation backlog, not an adopted toolchain
+> Status: installed for evaluation, not yet adopted as the default toolchain
 >
 > Recorded: July 30, 2026
+>
+> Installed: July 30, 2026
 
 This note records possible improvements to Ashfall's AI-assisted Godot workflow. The two candidates
 worth evaluating first are:
@@ -15,6 +17,28 @@ worth evaluating first are:
 
 Neither candidate should be installed or enabled merely because it appears here. Trial changes
 should use a dedicated branch, pin reviewed versions, and remain easy to remove.
+
+## Installed evaluation snapshot
+
+The evaluation branch currently includes:
+
+- Funplay MCP for Godot `v0.9.6`, pinned to upstream commit
+  `206a30c56ebaa661c910f068e74b649bbcd9ae23`, under `src/addons/funplay_mcp`;
+- the five recommended Godot skills, pinned to upstream commit
+  `01b3eb41b359a6386e7d27c8a704baaa2a2fcfd9`, under `.agents/skills`;
+- the corresponding MIT and Apache-2.0 license and attribution files.
+
+The Funplay editor plugin is enabled in `src/project.godot`. Its first editor launch created a
+random per-project auth token under Godot's `user://` data, and an authenticated, pinned
+`funplay-godot-mcp@0.9.6` client entry was added to the user-local Codex configuration. The token
+remains outside Git. The user-local settings retain the `core` profile and safety checks, with the
+high-impact `execute_code` and `install_runtime_bridge` tools disabled by default. Restart Codex so
+the new MCP server is discovered. A runtime-capture trial may temporarily re-enable the bridge
+installer only after snapshotting `src/project.godot`; remove the bridge and review the exact diff
+immediately afterward because its default save path invokes `ProjectSettings.save()`.
+
+Until the Codex restart is complete, the existing `@coding-solo/godot-mcp` connection remains the
+active MCP in this session.
 
 ## Current baseline
 
@@ -155,12 +179,13 @@ project requirement, the conflict must be surfaced rather than silently "correct
 
 ## Suggested sequence
 
-1. Pin the current MCP version to stabilize the baseline.
+1. Restart Codex so it loads the installed Funplay MCP client entry and the five Godot skills.
 2. Trial Funplay on a disposable branch using the acceptance criteria above.
-3. Decide whether Funplay replaces the current MCP or whether the current narrow MCP remains the
+3. Pin the current MCP version if it remains part of the long-term baseline.
+4. Decide whether Funplay replaces the current MCP or whether the current narrow MCP remains the
    better default.
-4. Review and trial the five recommended Godot skills individually.
-5. After real usage, consider extracting the useful parts into a small repository-local
+5. Review and trial the five installed Godot skills individually.
+6. After real usage, consider extracting the useful parts into a small repository-local
    `ashfall-godot` skill tied to the installed Godot version and Ashfall's tests.
 
 The goal is not to maximize the number of tools available to an agent. It is to improve the
