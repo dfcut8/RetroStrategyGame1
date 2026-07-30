@@ -5,6 +5,7 @@ config_version=5
 [application]
 
 config/name="Ashfall"
+run/main_scene="res://scenes/settlement/SettlementScene.tscn"
 
 [display]
 
