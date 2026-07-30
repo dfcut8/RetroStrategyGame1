@@ -4,11 +4,12 @@ The Godot project lives entirely in this `src` directory.
 
 ## Native presentation
 
-- Canvas and window: **640×480**
-- Window resizing: disabled
-- Stretch mode: disabled
+- Logical canvas: **640×480**
+- Default window: **1920×1440** (3× integer scale)
+- Window resizing: enabled; the game canvas scales by whole-number steps
+- Stretch mode: viewport, with 4:3 aspect preserved and integer scaling
 - Canvas texture filter: nearest
-- Mipmaps: nearest when explicitly used; current 2D assets do not generate mipmaps
+- Mipmap filtering: disabled; current 2D assets do not generate mipmaps
 - 2D transforms and vertices: snapped to whole pixels
 - Renderer: Compatibility
 

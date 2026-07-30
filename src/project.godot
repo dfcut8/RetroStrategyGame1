@@ -1,5 +1,5 @@
 ; Ashfall Godot project.
-; Keep the game at its native 640x480 canvas: no stretch, no runtime scaling.
+; Render on a native 640x480 canvas and scale the complete canvas by integer steps.
 config_version=5
 
 [application]
@@ -11,17 +11,19 @@ run/main_scene="res://scenes/settlement/SettlementScene.tscn"
 
 window/size/viewport_width=640
 window/size/viewport_height=480
-window/size/window_width_override=640
-window/size/window_height_override=480
-window/size/resizable=false
-window/stretch/mode="disabled"
+window/size/window_width_override=1920
+window/size/window_height_override=1440
+window/size/resizable=true
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
+window/stretch/scale_mode="integer"
 
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/canvas_textures/default_texture_filter=0
-textures/default_filters/use_nearest_mipmap_filter=true
+textures/default_filters/use_nearest_mipmap_filter=false
 textures/default_filters/anisotropic_filtering_level=0
 2d/snap/snap_2d_transforms_to_pixel=true
 2d/snap/snap_2d_vertices_to_pixel=true

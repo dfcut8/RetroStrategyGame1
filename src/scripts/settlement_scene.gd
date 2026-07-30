@@ -393,7 +393,7 @@ func _build_interface() -> void:
 	report_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	report_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 
-	var pressure_label := _make_label("PRESSURE\nLOW\n\nTHREAT\nRAIDERS", Vector2(424, 402), Vector2(86, 72), 10, COLORS.ink)
+	var pressure_label := _make_label("PRESSURE\nLOW\nTHREAT\nRAIDERS", Vector2(424, 402), Vector2(86, 72), 10, COLORS.ink)
 	pressure_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 
 	end_turn_button = Button.new()
