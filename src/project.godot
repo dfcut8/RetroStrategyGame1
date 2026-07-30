@@ -18,6 +18,10 @@ window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 window/stretch/scale_mode="integer"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/funplay_mcp/plugin.cfg")
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
