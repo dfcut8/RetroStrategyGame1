@@ -1,14 +1,22 @@
 # Named Palettes
 
-28 hardware-accurate and artistic palettes available to `pixel_art()`.
-Palette values are sourced from `pixel-art-studio` (MIT) — see ATTRIBUTION.md in the skill root.
+30 project, hardware-accurate, and artistic palettes are available to `pixel_art()`.
+Hardware and generic artistic palette values are sourced from `pixel-art-studio` (MIT); the
+Ashfall palettes are project-specific. See ATTRIBUTION.md in the skill root.
 
 Usage: pass the palette name as `palette=` or let a preset select it.
 
 ```python
 pixel_art("in.png", "out.png", preset="nes")           # preset selects NES
-pixel_art("in.png", "out.png", preset="custom", palette="PICO_8", block=6)
+pixel_art("in.png", "out.png", preset="arcade", palette="PICO_8", block=6)
 ```
+
+## Project Palettes
+
+| Name | Colors | Use |
+|------|--------|-----|
+| `ASHFALL_CORE` | 8 | Default for simple Ashfall sprites and structures |
+| `ASHFALL_16` | 16 | Extended ceiling for Ashfall backgrounds and UI |
 
 ## Hardware Palettes
 
