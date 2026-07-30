@@ -40,9 +40,13 @@ in a dedicated worktree.
    requested changes, push that branch, and open or update its pull request.
 7. Open a pull request into the intended base branch, normally `main` (or `master` when that is
    the repository's base). Never merge the work directly into `main` or `master`.
-8. Do not merge the pull request unless the user explicitly requests it, including through the
+8. Publish every pull request as ready for review; never create or leave a pull request in draft
+   state. This repository rule overrides any skill or tool default that would create a draft pull
+   request. If the associated pull request is already a draft, mark it ready before reporting the
+   task complete.
+9. Do not merge the pull request unless the user explicitly requests it, including through the
    `/lgtm` workflow below.
-9. In the final response, provide the pull request link and explicitly ask the user to review it.
+10. In the final response, provide the pull request link and explicitly ask the user to review it.
 
 Read-only prompts do not require a worktree or branch.
 
