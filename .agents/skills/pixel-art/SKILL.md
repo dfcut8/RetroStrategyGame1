@@ -1,36 +1,32 @@
 ---
 name: pixel-art
-description: "Convert existing non-Ashfall images into generic retro pixel art or animations with era palettes (NES, Game Boy, PICO-8, C64). Do not use for Ashfall-facing visuals; use generate-ashfall-assets for runtime, concept, documentation, or promotional art."
-version: 2.0.0
-author: dodo-reach
-license: MIT
-platforms: [linux, macos, windows]
-metadata:
-  hermes:
-    tags: [creative, pixel-art, arcade, snes, nes, gameboy, retro, image, video]
-    category: creative
-    credits:
-      - "Hardware palettes and animation loops ported from Synero/pixel-art-studio (MIT) — https://github.com/Synero/pixel-art-studio"
+description: Create or convert Ashfall and generic retro raster art with deterministic pixel-grid, palette, transparency, native-size, and optional animation processing. Use for Ashfall runtime sprites, buildings, terrain, UI imagery, concepts, documentation, and promotional art, and for NES, Game Boy, PICO-8, C64, arcade, or SNES conversions.
 ---
 
 # Pixel Art
 
-Convert any image into retro pixel art, then optionally animate it into a short
-MP4 or GIF with era-appropriate effects (rain, fireflies, snow, embers).
+Create or convert raster sources into controlled retro pixel art, then optionally animate generic
+art into a short MP4 or GIF.
 
-## Project Scope and Precedence
+## Ashfall Authority
 
-This is a generic conversion and animation utility. It is not the authoritative workflow for
-Ashfall game assets.
+This is the repository's authoritative workflow for Ashfall raster art.
 
-- For any Ashfall-facing visual—including runtime assets, concepts, documentation imagery, and
-  promotional art—use `$generate-ashfall-assets` instead.
-- Use this skill for converting an unrelated source image, producing a non-Ashfall experiment, or
-  creating an optional non-Ashfall animated derivative.
-- If both skills appear applicable, `$generate-ashfall-assets` takes precedence. Do not chain this
-  generic converter or its animation overlays into an Ashfall asset workflow.
-- The generic `c64` preset is only an era approximation; it is not equivalent to Ashfall's
-  project-specific 16-color palette.
+- For Ashfall work, first read the relevant parts of `docs/GAME_DESIGN_DOCUMENT.md`,
+  `docs/DESIGN_STYLE.md`, and `docs/CONTROL_SCHEME.md`, then inspect the applicable images under
+  `docs/visual-concepts/`.
+- Use the `ashfall` preset for final runtime conversion. It defaults to the eight-color
+  `ASHFALL_CORE` palette to favor simple graphics and large color clusters. Use `ASHFALL_16` only
+  when a background or UI asset genuinely needs the extended palette.
+- Target 6–9 opaque colors per sprite. The 16-color palette is a ceiling, not a target.
+- Use three-quarter top-down orthographic perspective for settlement objects and flat top-down
+  perspective for terrain.
+- Preserve the established native scale anchors: 96×80 for small Camp structures, 112×96 for
+  milestone-sized structures, 640×360 for settlement ground, and 640×480 for the game canvas.
+- Reject sources with unnecessary bolts, seams, loose props, micro-highlights, or more than three
+  readable material groups. Quantization does not repair an overdesigned silhouette.
+- Preserve aggregate-population framing and Camp/Settlement capability gates.
+- Do not apply optional weather or particle animation overlays to runtime assets.
 
 Two scripts ship with this skill:
 
@@ -41,56 +37,49 @@ Each is importable or runnable directly. Presets snap to hardware palettes
 when you want era-accurate colors (NES, Game Boy, PICO-8, etc.), or use
 adaptive N-color quantization for arcade/SNES-style looks.
 
-## When to Use
-
-- User wants generic retro pixel art from an existing source image
-- User asks for NES / Game Boy / PICO-8 / C64 / arcade / SNES styling
-- User wants a short looping animation (rain scene, night sky, snow, etc.)
-- Posters, album covers, social posts, sprites, characters, avatars
-- The requested output is not an Ashfall-facing visual
-
 ## Workflow
 
-Before generating, confirm the style with the user. Different presets produce
-very different outputs and regenerating is costly.
+### Step 1 — Determine the source path
 
-### Step 1 — Offer a style
+- For a new Ashfall asset, use the built-in ImageGen capability only to create a deliberately
+  simple source. Request one dominant mass, one secondary form, one identifying feature, no tiny
+  decoration, and a flat removable chroma-key background.
+- For an existing image, use it directly as the conversion source.
+- ImageGen and this skill are not the same: ImageGen synthesizes a raster source; this skill
+  deterministically controls the final pixel grid, palette, dimensions, and optional animation.
 
-Ask the user to choose from 4 representative presets. Pick the set based on what the
-user asked for — don't just dump all 14.
+### Step 2 — Select the style
 
-Default menu when the user's intent is unclear:
+- For Ashfall, use `ashfall` without asking for a generic era preset.
+- For non-Ashfall work with unclear intent, offer up to four relevant presets:
 
 - `arcade` — bold, chunky 80s cabinet feel (16 colors, 8px)
 - `nes` — Nintendo 8-bit hardware palette (54 colors, 8px)
 - `gameboy` — 4-shade green Game Boy DMG
 - `snes` — cleaner 16-bit look (32 colors, 4px)
 
-When the user already named an era (e.g. "80s arcade", "Gameboy"), use the matching preset
+When the user names an era, use the matching preset
 directly without asking again.
 
-### Step 2 — Offer animation (optional)
+### Step 3 — Convert
 
-If the user asked for a video/GIF, or the output might benefit from motion,
-ask which scene:
+- Remove a flat chroma-key background during conversion with `--chroma-key ff00ff`; use a small
+  `--chroma-tolerance` only when the supposedly flat source contains minor key-color variation.
+- Convert directly to the final native dimensions with `size=(width, height)`.
+- Inspect the result at original resolution. Reject unclear silhouettes, noisy dithering,
+  fragmented color clusters, excessive material groups, fringe, or style drift.
+- For Godot runtime PNGs, verify lossless import, mipmaps disabled, nearest filtering, and no
+  runtime scaling.
 
-- `night` — stars + fireflies + leaves
-- `urban` — rain + neon pulse
-- `snow` — falling snowflakes
-- `skip` — just the image
+### Step 4 — Animate only when requested
 
-Ask at most twice: once for style and once for scene if animation is on the table. If the user
-explicitly asked for a specific style and scene, do not ask again.
-
-### Step 3 — Generate
-
-Run `pixel_art()` first; if animation was requested, chain into
-`pixel_art_video()` on the result.
+For non-runtime art, run `pixel_art_video()` after conversion when the user requests motion.
 
 ## Preset Catalog
 
 | Preset | Era | Palette | Block | Best for |
 |--------|-----|---------|-------|----------|
+| `ashfall` | Ashfall | fixed 8-color core | 2px | Ashfall runtime sprites and structures |
 | `arcade` | 80s arcade | adaptive 16 | 8px | Bold posters, hero art |
 | `snes` | 16-bit | adaptive 32 | 4px | Characters, detailed scenes |
 | `nes` | 8-bit | NES (54) | 8px | True NES look |
@@ -107,10 +96,11 @@ Run `pixel_art()` first; if animation was requested, chain into
 | `pastel` | Soft pastel | 10 pastels | 6px | Kawaii / gentle |
 
 Named palettes live in `scripts/palettes.py` (see `references/palettes.md` for
-the complete list — 28 named palettes total). Any preset can be overridden:
+the complete list — 30 named palettes total). Any preset can be overridden:
 
 ```python
 pixel_art("in.png", "out.png", preset="snes", palette="PICO_8", block=6)
+pixel_art("source.png", "building.png", preset="ashfall", size=(112, 96))
 ```
 
 ## Scene Catalog (for video)
@@ -163,6 +153,8 @@ pixel_art_video(
 # Run from the repository root with a Python environment that provides Pillow.
 python .\.agents\skills\pixel-art\scripts\pixel_art.py in.jpg out.png --preset gameboy
 python .\.agents\skills\pixel-art\scripts\pixel_art.py in.jpg out.png --preset snes --palette PICO_8 --block 6
+python .\.agents\skills\pixel-art\scripts\pixel_art.py source.png building.png `
+  --preset ashfall --size 112x96 --chroma-key ff00ff --chroma-tolerance 48
 
 python .\.agents\skills\pixel-art\scripts\pixel_art_video.py out.png out.mp4 --scene night --duration 6 --gif
 ```
@@ -170,15 +162,15 @@ python .\.agents\skills\pixel-art\scripts\pixel_art_video.py out.png out.mp4 --s
 ## Pipeline Rationale
 
 **Pixel conversion:**
-1. Boost contrast/color/sharpness (stronger for smaller palettes)
-2. Posterize to simplify tonal regions before quantization
-3. Downscale by `block` with `Image.NEAREST` (hard pixels, no interpolation)
-4. Quantize with Floyd-Steinberg dithering — against either an adaptive
+1. Resize to the requested native output dimensions when supplied.
+2. Boost contrast/color/sharpness (stronger for smaller palettes).
+3. Posterize to simplify tonal regions before quantization.
+4. Downscale by `block` with `Image.NEAREST` (hard pixels, no interpolation).
+5. Quantize against either an adaptive
    N-color palette OR a named hardware palette
-5. Upscale back with `Image.NEAREST`
+6. Upscale back with `Image.NEAREST` and restore hard transparency.
 
-Quantizing AFTER downscale keeps dithering aligned with the final pixel grid.
-Quantizing before would waste error-diffusion on detail that disappears.
+The `ashfall` preset disables dithering so flat clusters stay readable instead of becoming noisy.
 
 **Video overlay:**
 - Copies the base frame each tick (static background)
@@ -213,6 +205,8 @@ bundled environment includes Pillow. Do not assume the system `python` command h
 - PNG is created at the output path
 - Clear square pixel blocks visible at the preset's block size
 - Color count matches preset (eyeball the image or run `Image.open(p).getcolors()`)
+- Ashfall sprites use 6–9 opaque colors by default, have a clear silhouette, and contain no
+  antialiased alpha
 - Video is a valid MP4 (`ffprobe` can open it) with non-zero size
 
 ## Attribution
