@@ -47,8 +47,8 @@ func _initialize() -> void:
 		"2D transforms must stay on the logical pixel grid."
 	)
 	assert(
-		ProjectSettings.get_setting("rendering/2d/snap/snap_2d_vertices_to_pixel"),
-		"2D vertices must stay on the logical pixel grid."
+		not ProjectSettings.get_setting("rendering/2d/snap/snap_2d_vertices_to_pixel"),
+		"Global vertex snapping must stay off when transform snapping is enabled."
 	)
 	assert(
 		ProjectSettings.get_setting("rendering/anti_aliasing/quality/msaa_2d") == 0,

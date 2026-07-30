@@ -73,6 +73,51 @@ documents, explain the conflict and ask the user to approve the design change.
 In the final response, state whether the completed work is aligned with the GDD and style guide,
 including any approved exceptions or unresolved questions.
 
+## Pixel-art and Godot presentation guardians
+
+Project-scoped custom agents live under `.codex/agents/`. Their reviews are mandatory for the
+relevant changes below and supplement, rather than replace, the GDD and style guard.
+
+### Pixel-art asset work
+
+For any task that creates, regenerates, converts, or materially revises raster art used by Ashfall
+(including sprites, buildings, terrain, maps, interface imagery, concepts, documentation art, and
+promotional art):
+
+1. Use `.agents/skills/pixel-art` as the authoritative generation/conversion workflow. Never use
+   the deprecated `generate-ashfall-assets` workflow.
+2. Before generating the source or final asset, delegate a read-only preflight review to the
+   custom agent `pixel_art_guardian`. Provide the gameplay role, stage, references, prompt, native
+   dimensions, palette/preset, output path, and intended runtime display size.
+3. Resolve every direct preflight conflict before generating.
+4. After generation and scene integration, delegate a final read-only review to
+   `pixel_art_guardian`. Provide the changed-file list, asset paths, conversion command/settings,
+   palette and alpha statistics, Godot import metadata, and native/runtime screenshots.
+5. Resolve every direct final-review conflict before completion. Report the guardian's alignment
+   verdict in the final response.
+
+### Godot pixel-perfect presentation
+
+For every task that changes files under `src/`, delegate at least a quick read-only audit of the
+current project settings to `godot_pixel_guardian`. For any task that changes `project.godot`,
+texture import behavior, window/viewport/stretch settings, render filtering, antialiasing, pixel
+snapping, cameras, CanvasItem transforms, raster runtime scale, or scene layout at the
+logical-canvas boundary, require the full review below:
+
+1. Delegate a read-only review to the custom agent `godot_pixel_guardian` after the proposed diff
+   and relevant tests/captures are available. For a material rendering-policy change, also request
+   a preflight review before implementation.
+2. Provide the installed Godot version, changed-file list and diff, affected import files, native
+   and integer-scale captures, and test results.
+3. Require the guardian to verify current official Godot documentation for version-sensitive
+   behavior and to label community advice separately from normative documentation.
+4. Resolve every direct conflict before completion. Report the guardian's alignment verdict in
+   the final response.
+
+If a required custom guardian cannot be spawned or discovered, do not silently skip it or claim
+that it ran. Pause finalization and report that the project agent configuration must be reloaded
+or repaired.
+
 ## Remote synchronization check
 
 After any task that changes files in this repository, and before the final response:
