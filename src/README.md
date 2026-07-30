@@ -34,5 +34,5 @@ The playable Settlement prototype adds:
 - five permanent buildings: Bunkhouse, Clinic, Greenhouse, Workshop, and Commons Hall;
 - visible Scrap costs and projected effects before building.
 
-Runtime PNGs are final game assets. Asset generation and conversion live outside the Godot project
-in the repository-local `.agents/skills/generate-ashfall-assets` skill.
+Runtime PNGs are final game assets. Raster generation, conversion, palette control, and optional
+animation use the repository-local `.agents/skills/pixel-art` skill.
