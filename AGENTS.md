@@ -40,9 +40,13 @@ in a dedicated worktree.
    requested changes, push that branch, and open or update its pull request.
 7. Open a pull request into the intended base branch, normally `main` (or `master` when that is
    the repository's base). Never merge the work directly into `main` or `master`.
-8. Do not merge the pull request unless the user explicitly requests it, including through the
+8. Publish every pull request as ready for review; never create or leave a pull request in draft
+   state. This repository rule overrides any skill or tool default that would create a draft pull
+   request. If the associated pull request is already a draft, mark it ready before reporting the
+   task complete.
+9. Do not merge the pull request unless the user explicitly requests it, including through the
    `/lgtm` workflow below.
-9. In the final response, provide the pull request link and explicitly ask the user to review it.
+10. In the final response, provide the pull request link and explicitly ask the user to review it.
 
 Read-only prompts do not require a worktree or branch.
 
@@ -156,7 +160,18 @@ open pull request associated with the current worktree branch. Do not ask for an
 4. Merge using a repository-supported method, preferring squash when more than one method is
    available. Do not merge unrelated pull requests.
 5. Verify that the pull request reports `MERGED` and that the remote base branch contains the
-   resulting commit before reporting success.
+   resulting commit before deleting either branch.
+6. Delete the pull request's remote head branch, if it still exists, when it belongs to the same
+   `origin` repository and exactly matches the current worktree branch. An already-absent remote
+   branch counts as complete cleanup. If the remote repository or branch identity is ambiguous,
+   do not guess; report that remote cleanup is incomplete.
+7. Detach the current worktree at the refreshed remote base branch, then delete the now-unchecked-out
+   local pull request branch. Never delete the base branch, a protected branch, an unrelated branch,
+   or a branch checked out by another worktree.
+8. Verify that the pull request branch no longer exists locally or on its applicable remote before
+   reporting success. If either deletion fails, keep the verified merge intact and report the
+   remaining branch and failure clearly.
 
-The `/lgtm` command authorizes the merge and its normal verification steps. It does not authorize
-unrelated releases, deployments, branch deletions, or cleanup of other worktrees.
+The `/lgtm` command authorizes the merge, deletion of that pull request's local and remote head
+branches, and the normal verification steps. It does not authorize unrelated releases,
+deployments, branch deletions, or cleanup of other worktrees.
