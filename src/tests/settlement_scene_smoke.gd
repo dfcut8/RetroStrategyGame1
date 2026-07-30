@@ -10,6 +10,16 @@ func _run() -> void:
 	root.add_child(scene)
 	await process_frame
 
+	scene._preview_building("clinic")
+	assert("CLINIC" in scene.details_label.text)
+	assert("HEALTH" in scene.details_label.text)
+	scene._clear_hover_preview()
+
+	scene._preview_plot(0)
+	assert("PLOT 1 / EMPTY" in scene.details_label.text)
+	assert("PREVIEW" in scene.details_label.text)
+	scene._clear_hover_preview()
+
 	for index in scene.BUILD_ORDER.size():
 		var building_id: String = scene.BUILD_ORDER[index]
 		var building: Dictionary = scene.BUILDINGS[building_id]
@@ -31,6 +41,11 @@ func _run() -> void:
 		assert(scene.get(building.effect_key) == effect_before + building.effect_value)
 		assert(scene.cohesion == cohesion_before + building.cohesion)
 		assert(scene.reserved_workers == 0)
+
+	scene._preview_plot(0)
+	assert("BUNKHOUSE" in scene.details_label.text)
+	assert("CONDITION: STABLE" in scene.details_label.text)
+	scene._clear_hover_preview()
 
 	var scrap_after_builds: int = scene.scrap
 	scene._select_plot(0)
